@@ -46,15 +46,33 @@ const FAQS: FAQItem[] = [
 ];
 
 export default function FAQSection() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
-    <section id="faq" className="relative py-28 bg-[#09090b] border-t border-white/10">
+    <section id="faq" aria-label="Frequently Asked Questions and Answers" className="relative py-28 bg-[#09090b] border-t border-white/10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
-            <HelpCircle className="w-3.5 h-3.5" />
-            Frequently Asked Questions
-          </div>
+          <Badge variant="gold" className="mb-4">
+            <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
+            Answer Engine & Search FAQ
+          </Badge>
           <h2 className="text-heading font-extrabold text-white mb-4">
             Everything You Need to Know About <br />
             <ShinyText text="Our Solutions & Execution" speed={4} />

@@ -18,6 +18,25 @@ export default function PriceCataloguePage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://jmcreations.in",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Price Catalogue",
+        item: "https://jmcreations.in/catalogue",
+      },
+    ],
+  };
+
   const categories = [
     "All",
     ...FULL_CATALOGUE_DATA.map((cat) => cat.title),
@@ -47,6 +66,11 @@ export default function PriceCataloguePage() {
   return (
     <SmoothScrollProvider>
       <div className="relative min-h-screen bg-[#0a0a0a] text-white selection:bg-[#d4a853] selection:text-black">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+
         <CustomCursor />
 
         {/* Top Header Navigation */}
@@ -73,7 +97,7 @@ export default function PriceCataloguePage() {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+        <main aria-label="Official Service & Pricing Catalogue" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
           {/* Page Banner Header */}
           <div className="flex flex-col items-center text-center mb-16">
             <Badge variant="gold" className="mb-4">
