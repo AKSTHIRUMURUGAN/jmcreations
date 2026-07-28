@@ -1,288 +1,223 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Search,
-  Check,
-  ArrowRight,
-  MessageSquare,
-  Sparkles,
-  ShieldCheck,
-  Globe,
-  TrendingUp,
-  Palette,
-  Video,
-  Award,
-  Briefcase,
-  Layers,
-  ArrowLeft,
-} from "lucide-react";
 import Link from "next/link";
+import { ArrowLeft, Search, Check, Sparkles, MessageSquare } from "lucide-react";
+import { FULL_CATALOGUE_DATA, MONTHLY_PACKAGES } from "@/lib/catalogueData";
+import { INITIAL_SETTINGS } from "@/lib/adminStore";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import SmoothScrollProvider from "@/components/motion/SmoothScrollProvider";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import FloatingDock from "@/components/layout/FloatingDock";
-import AdminModal from "@/components/admin/AdminModal";
-import { INITIAL_SETTINGS } from "@/lib/adminStore";
-import {
-  FULL_CATALOGUE_DATA,
-  MONTHLY_PACKAGES,
-  CatalogueCategory,
-  CatalogueService,
-} from "@/lib/catalogueData";
+import { ShinyText } from "@/components/ui/ShinyText";
+import { BorderBeam } from "@/components/ui/BorderBeam";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-const ICON_MAP: Record<string, React.ReactNode> = {
-  ShieldCheck: <ShieldCheck className="w-5 h-5 text-[#d4a853]" />,
-  Globe: <Globe className="w-5 h-5 text-[#d4a853]" />,
-  TrendingUp: <TrendingUp className="w-5 h-5 text-[#d4a853]" />,
-  Palette: <Palette className="w-5 h-5 text-[#d4a853]" />,
-  Video: <Video className="w-5 h-5 text-[#d4a853]" />,
-  Award: <Award className="w-5 h-5 text-[#d4a853]" />,
-  Briefcase: <Briefcase className="w-5 h-5 text-[#d4a853]" />,
-};
-
-export default function CataloguePage() {
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+export default function PriceCataloguePage() {
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [inquiryItem, setInquiryItem] = useState<{ name: string; price: string } | null>(null);
 
-  const filterCategories = FULL_CATALOGUE_DATA.filter((cat) => {
-    if (activeTab !== "all" && cat.id !== activeTab) return false;
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    const matchesCategory = cat.title.toLowerCase().includes(query);
-    const matchesService = cat.services.some(
-      (s) => s.name.toLowerCase().includes(query) || s.price.toLowerCase().includes(query)
-    );
-    return matchesCategory || matchesService;
-  });
+  const categories = [
+    "All",
+    ...FULL_CATALOGUE_DATA.map((cat) => cat.title),
+  ];
 
-  const handleWhatsAppInquiry = (serviceName: string, servicePrice: string) => {
-    const text = `Hello JM Creations team, I am interested in inquiring about:\n\nService: ${serviceName}\nListed Price: ${servicePrice}\n\nPlease share the detailed proposal and onboarding steps.`;
-    const waUrl = `https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(text)}`;
-    window.open(waUrl, "_blank");
+  const filteredCategories = FULL_CATALOGUE_DATA.filter((cat) => {
+    if (activeCategory !== "All" && cat.title !== activeCategory) {
+      return false;
+    }
+    return true;
+  }).map((cat) => {
+    const filteredItems = cat.services.filter((item) => {
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.desc && item.desc.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        item.price.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesSearch;
+    });
+    return { ...cat, services: filteredItems };
+  }).filter((cat) => cat.services.length > 0);
+
+  const getWhatsAppLink = (serviceName: string, price: string) => {
+    const text = `Hello JM Creations, I am interested in ordering/inquiring about: ${serviceName} (${price}). Please share the onboarding process.`;
+    return `https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(text)}`;
   };
 
   return (
     <SmoothScrollProvider>
-      <div className="relative min-h-screen bg-[#09090b] text-white selection:bg-[#d4a853] selection:text-black">
+      <div className="relative min-h-screen bg-[#0a0a0a] text-white selection:bg-[#d4a853] selection:text-black">
         <CustomCursor />
 
-        <Navbar
-          onOpenQuote={() => {
-            const el = document.getElementById("packages");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-          onOpenAdmin={() => setIsAdminOpen(true)}
-        />
-
-        <main className="pt-28 pb-20 relative z-10">
-          {/* Header Banner */}
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#d4a853]/10 rounded-full blur-3xl pointer-events-none" />
-
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 hover:text-white hover:border-[#d4a853]/40 transition-all mb-6"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#d4a853]" />
-              <span>Back to Main Platform</span>
+        {/* Top Header Navigation */}
+        <header className="sticky top-0 z-40 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/10 py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <Link href="/" className="inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors">
+              <ArrowLeft className="w-4 h-4 text-[#d4a853]" />
+              <span>Back to Home</span>
             </Link>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest block w-fit mx-auto">
-              <Sparkles className="w-3.5 h-3.5" />
-              Complete Service Portfolio {"&"} Pricing Catalogue
+            <div className="flex items-center gap-2">
+              <Badge variant="gold">OFFICIAL SERVICE & PRICING CATALOGUE</Badge>
             </div>
 
-            <h1 className="text-hero font-extrabold tracking-tight text-white mb-4">
-              One Company. <br />
-              <span className="gold-gradient-text">Complete Business Solutions.</span>
+            <a
+              href={`https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs text-[#d4a853] hover:text-white font-mono transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>WhatsApp Direct</span>
+            </a>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+          {/* Page Banner Header */}
+          <div className="flex flex-col items-center text-center mb-16">
+            <Badge variant="gold" className="mb-4">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5 text-[#d4a853]" />
+              Transparent Pricing & Service SLA
+            </Badge>
+
+            <h1 className="text-hero font-extrabold text-white mb-4">
+              JM Creations Official <br />
+              <ShinyText text="Service & Pricing Catalogue" speed={4} />
             </h1>
-
-            <p className="text-subheading text-zinc-400 max-w-2xl mx-auto mb-8">
-              Transparent, competitive pricing across our entire portfolio of business registration, digital marketing, website development, video editing, event management, and consulting services.
+            <p className="text-subheading text-zinc-400 max-w-2xl">
+              100+ business solutions and transparent rates extracted straight from our service manifesto.
             </p>
-
-            {/* Search Input */}
-            <div className="relative max-w-xl mx-auto">
-              <Search className="w-5 h-5 absolute left-4 top-3.5 text-zinc-500" />
-              <input
-                type="text"
-                placeholder="Search across 100+ services and prices (e.g. GST, Next.js, Meta Ads, Video)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 text-xs bg-white/[0.04] border border-white/15 rounded-2xl text-white placeholder-zinc-500 focus:outline-none focus:border-[#d4a853] transition-colors shadow-2xl backdrop-blur-md"
-              />
-            </div>
           </div>
 
-          {/* Monthly Retainer Bundles Section */}
-          <section id="packages" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-            <div className="flex flex-col items-center text-center mb-10">
-              <span className="text-xs font-mono text-[#d4a853] uppercase tracking-widest">
-                ALL-IN-ONE MONTHLY RETAINERS
-              </span>
-              <h2 className="text-heading font-extrabold text-white">Featured Growth Bundles</h2>
+          {/* Featured Monthly Retainer Plans with 3D TiltCard & BorderBeam */}
+          <div className="mb-20">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+              <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <span>Monthly Business Retainers</span>
+                <Badge variant="emerald">MOST POPULAR FOR STARTUPS</Badge>
+              </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {MONTHLY_PACKAGES.map((pkg, index) => (
-                <div
-                  key={index}
-                  className={`p-8 rounded-3xl glass-card border flex flex-col justify-between relative ${
-                    pkg.popular
-                      ? "border-[#d4a853] bg-gradient-to-b from-[#d4a853]/15 via-transparent to-transparent shadow-2xl shadow-[#d4a853]/10"
-                      : "border-white/10"
-                  }`}
-                >
-                  {pkg.popular && (
-                    <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[10px] font-extrabold font-mono uppercase px-3 py-1 rounded-full bg-[#d4a853] text-black shadow-lg">
-                      MOST POPULAR PACKAGE
-                    </span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {MONTHLY_PACKAGES.map((plan, idx) => (
+                <TiltCard key={idx} className="h-full flex flex-col justify-between group relative overflow-hidden">
+                  {plan.popular && (
+                    <BorderBeam size={220} duration={12} colorFrom="#d4a853" colorTo="#f0c36d" />
+                  )}
+
+                  {plan.popular && (
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="gold">RECOMMENDED</Badge>
+                    </div>
                   )}
 
                   <div>
-                    <h3 className="text-lg font-bold text-white mb-2">{pkg.name}</h3>
-                    <div className="text-3xl font-black text-white gold-gradient-text mb-6">
-                      {pkg.price}
-                    </div>
+                    <span className="text-[10px] font-mono text-[#d4a853] uppercase">{plan.name}</span>
+                    <h3 className="text-xl font-black text-white mt-1 mb-2">{plan.price}</h3>
 
-                    <div className="space-y-3 mb-8">
-                      {pkg.features.map((feat, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-2.5 text-xs text-zinc-300">
-                          <Check className="w-4 h-4 text-[#d4a853] shrink-0 mt-0.5" />
+                    <h4 className="text-[11px] font-mono text-zinc-500 uppercase mb-3">Included Monthly Scope:</h4>
+                    <div className="space-y-2 mb-8">
+                      {plan.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2 text-xs text-zinc-300">
+                          <Check className="w-3.5 h-3.5 text-[#d4a853] shrink-0 mt-0.5" />
                           <span>{feat}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => handleWhatsAppInquiry(pkg.name, pkg.price)}
-                    className={`w-full py-3.5 rounded-2xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${
-                      pkg.popular
-                        ? "bg-[#d4a853] text-black hover:bg-[#f0c36d] shadow-lg shadow-[#d4a853]/25"
-                        : "bg-white/5 hover:bg-[#d4a853] text-white hover:text-black border border-white/10"
-                    }`}
+                  <a
+                    href={getWhatsAppLink(`Monthly Retainer - ${plan.name}`, plan.price)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>{pkg.ctaText}</span>
-                  </button>
-                </div>
+                    <Button variant={plan.popular ? "gold" : "outline"} size="lg" className="w-full">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      <span>{plan.ctaText}</span>
+                    </Button>
+                  </a>
+                </TiltCard>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* Category Navigation Pills */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-            <div className="flex items-center justify-start lg:justify-center gap-2 overflow-x-auto pb-4 scrollbar-none">
-              <button
-                onClick={() => setActiveTab("all")}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                  activeTab === "all"
-                    ? "bg-[#d4a853] text-black shadow-lg shadow-[#d4a853]/20"
-                    : "bg-white/5 text-zinc-400 border border-white/10 hover:text-white"
-                }`}
-              >
-                All Categories ({FULL_CATALOGUE_DATA.reduce((acc, c) => acc + c.services.length, 0)})
-              </button>
-
-              {FULL_CATALOGUE_DATA.map((cat) => (
+          {/* Catalogue Filter Tabs & Search */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
+              {categories.map((cat) => (
                 <button
-                  key={cat.id}
-                  onClick={() => setActiveTab(cat.id)}
-                  className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
-                    activeTab === cat.id
-                      ? "bg-[#d4a853] text-black font-semibold shadow-lg shadow-[#d4a853]/20"
-                      : "bg-white/5 text-zinc-400 border border-white/10 hover:text-white"
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+                    activeCategory === cat
+                      ? "bg-[#d4a853] text-black font-bold shadow-lg shadow-[#d4a853]/20"
+                      : "text-zinc-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  {cat.title.split(". ")[1] || cat.title} ({cat.services.length})
+                  {cat}
                 </button>
               ))}
             </div>
+
+            <div className="relative w-full lg:w-80">
+              <Search className="w-4 h-4 absolute left-3.5 top-3 text-zinc-500" />
+              <Input
+                type="text"
+                placeholder="Search 100+ services..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
 
-          {/* Full Pricing Tables */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-            {filterCategories.map((cat) => {
-              const matchedServices = searchQuery
-                ? cat.services.filter(
-                    (s) =>
-                      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      s.price.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                : cat.services;
+          {/* Render Categorized Pricing Tables */}
+          <div className="space-y-16">
+            {filteredCategories.map((catGroup, cIdx) => (
+              <div key={cIdx} className="p-8 rounded-3xl glass-card border border-white/10">
+                <h3 className="text-xl font-black text-[#d4a853] mb-6 flex items-center gap-2 font-mono uppercase">
+                  <span>{catGroup.title}</span>
+                  <span className="text-xs font-normal text-zinc-500 font-sans">({catGroup.services.length} items)</span>
+                </h3>
 
-              if (matchedServices.length === 0) return null;
-
-              return (
-                <div
-                  key={cat.id}
-                  className="p-6 sm:p-8 rounded-3xl glass-card border border-white/10 relative"
-                >
-                  {/* Category Header */}
-                  <div className="flex items-center gap-3 pb-6 border-b border-white/10 mb-6">
-                    <div className="p-3 rounded-2xl bg-[#d4a853]/15 border border-[#d4a853]/30">
-                      {ICON_MAP[cat.iconName] || <Sparkles className="w-5 h-5 text-[#d4a853]" />}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-extrabold text-white">{cat.title}</h3>
-                      <p className="text-xs text-zinc-400 font-mono">{cat.subtitle}</p>
-                    </div>
-                  </div>
-
-                  {/* Services Grid Table */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {matchedServices.map((service, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#d4a853]/40 flex items-start justify-between gap-3 group transition-all"
-                      >
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-xs font-bold text-white group-hover:text-[#d4a853] transition-colors">
-                              {service.name}
-                            </h4>
-                            {service.badge && (
-                              <span className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#d4a853]/20 text-[#d4a853]">
-                                {service.badge}
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-sm font-extrabold text-[#d4a853] font-mono">
-                            {service.price}
-                          </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {catGroup.services.map((item, iIdx) => (
+                    <TiltCard key={iIdx} className="p-5 flex flex-col justify-between group">
+                      <div>
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <h4 className="text-sm font-bold text-white group-hover:text-[#d4a853] transition-colors">
+                            {item.name}
+                          </h4>
+                          <Badge variant="gold" className="shrink-0">{item.price}</Badge>
                         </div>
-
-                        <button
-                          onClick={() => handleWhatsAppInquiry(service.name, service.price)}
-                          className="p-2 rounded-xl bg-white/5 hover:bg-[#d4a853] text-zinc-400 hover:text-black transition-all shrink-0"
-                          title={`Inquire about ${service.name}`}
-                        >
-                          <MessageSquare className="w-3.5 h-3.5" />
-                        </button>
+                        {item.desc && (
+                          <p className="text-xs text-zinc-400 leading-relaxed mb-4">
+                            {item.desc}
+                          </p>
+                        )}
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-zinc-500">SLA: 24-72 hrs dispatch</span>
+                        <a
+                          href={getWhatsAppLink(item.name, item.price)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Button size="sm" variant="outline">
+                            <MessageSquare className="w-3.5 h-3.5 mr-1" />
+                            <span>Inquire Rate</span>
+                          </Button>
+                        </a>
+                      </div>
+                    </TiltCard>
+                  ))}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </main>
-
-        <Footer />
-        <FloatingDock
-          onOpenQuote={() => {
-            const el = document.getElementById("packages");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-        />
-
-        <AdminModal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
       </div>
     </SmoothScrollProvider>
   );

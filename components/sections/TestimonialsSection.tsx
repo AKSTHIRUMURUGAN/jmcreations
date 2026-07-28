@@ -1,67 +1,76 @@
 "use client";
 
 import React from "react";
-import { Star, Quote, Sparkles, TrendingUp } from "lucide-react";
+import { Star, Quote, Award } from "lucide-react";
 import { INITIAL_TESTIMONIALS } from "@/lib/adminStore";
+import { ShinyText } from "@/components/ui/ShinyText";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { Badge } from "@/components/ui/badge";
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimonials" className="relative py-28 bg-[#09090b] border-t border-white/10">
+    <section id="testimonials" className="relative py-28 bg-[#08080a] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" />
-            Executive Social Proof
-          </div>
+          <Badge variant="gold" className="mb-4">
+            <Award className="w-3.5 h-3.5 mr-1.5 text-[#d4a853]" />
+            Client Reviews & Trust
+          </Badge>
+
           <h2 className="text-heading font-extrabold text-white mb-4">
-            Trusted by Founder & Enterprise <br />
-            <span className="gold-gradient-text">Leaders Worldwide</span>
+            Trusted by Business Leaders <br />
+            <ShinyText text="& Scaling Startups" speed={4} />
           </h2>
-          <p className="text-subheading text-zinc-400 max-w-2xl">
-            Hear directly from business executives who scaled their operations, elevated their brand prestige, and unlocked high ROI with JM Creations.
+          <p className="text-subheading text-zinc-400 max-w-xl">
+            Hear directly from executives and entrepreneurs who rely on JM Creations for their business strategy, tech infrastructure, and performance growth.
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {INITIAL_TESTIMONIALS.map((t) => (
-            <div
-              key={t.id}
-              className="p-8 rounded-3xl glass-card border border-white/10 hover:border-[#d4a853]/40 flex flex-col justify-between relative group"
-            >
-              <Quote className="w-10 h-10 text-[#d4a853]/20 absolute top-6 right-6 pointer-events-none group-hover:text-[#d4a853]/40 transition-colors" />
-
+        {/* Testimonials Grid with 3D TiltCard */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {INITIAL_TESTIMONIALS.map((item) => (
+            <TiltCard key={item.id} className="h-full flex flex-col justify-between group">
               <div>
-                {/* Rating Stars */}
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#d4a853] text-[#d4a853]" />
-                  ))}
+                {/* Header Row: Stars & Quote Icon */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-1">
+                    {[...Array(item.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#d4a853] text-[#d4a853]" />
+                    ))}
+                  </div>
+                  <Quote className="w-6 h-6 text-[#d4a853]/30 group-hover:text-[#d4a853]/60 transition-colors" />
                 </div>
 
-                {/* Comment */}
+                {/* Review Quote */}
                 <p className="text-xs text-zinc-300 leading-relaxed italic mb-6">
-                  "{t.comment}"
+                  "{item.comment}"
                 </p>
               </div>
 
-              {/* Author Info */}
-              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="w-11 h-11 rounded-full object-cover border border-[#d4a853]/40"
-                />
-                <div>
-                  <h4 className="text-xs font-bold text-white">{t.name}</h4>
-                  <p className="text-[10px] text-zinc-400 font-mono">{t.role}, {t.company}</p>
-                  <span className="text-[10px] font-semibold text-[#d4a853] flex items-center gap-1 pt-0.5">
-                    <TrendingUp className="w-3 h-3" /> {t.metric}
-                  </span>
+              {/* Author & Result */}
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#d4a853] to-[#a87f32] p-[1px]">
+                    <img
+                      src={item.avatar}
+                      alt={item.name}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white group-hover:text-[#d4a853] transition-colors">
+                      {item.name}
+                    </h4>
+                    <span className="text-[10px] text-zinc-500 font-mono">
+                      {item.role}, {item.company}
+                    </span>
+                  </div>
                 </div>
+
+                <Badge variant="emerald">{item.metric}</Badge>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </div>

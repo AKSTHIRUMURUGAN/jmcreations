@@ -26,38 +26,55 @@ import {
   ShieldCheck,
   Sparkles,
   ArrowRight,
-  X,
   Check,
 } from "lucide-react";
 import { INITIAL_SERVICES, ServiceItem } from "@/lib/adminStore";
+import { ShinyText } from "@/components/ui/ShinyText";
+import { BorderBeam } from "@/components/ui/BorderBeam";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface ServicesSectionProps {
   onSelectService: (serviceTitle: string) => void;
 }
 
+const renderAnimatedIcon = (icon: React.ReactNode) => (
+  <AnimatedIcon animation="hover-rotate" glowColor="rgba(212, 168, 83, 0.5)">
+    {icon}
+  </AnimatedIcon>
+);
+
 const ICON_MAP: Record<string, React.ReactNode> = {
-  Briefcase: <Briefcase className="w-5 h-5 text-[#d4a853]" />,
-  Rocket: <Rocket className="w-5 h-5 text-[#d4a853]" />,
-  Palette: <Palette className="w-5 h-5 text-[#d4a853]" />,
-  Globe: <Globe className="w-5 h-5 text-[#d4a853]" />,
-  ShoppingBag: <ShoppingBag className="w-5 h-5 text-[#d4a853]" />,
-  TrendingUp: <TrendingUp className="w-5 h-5 text-[#d4a853]" />,
-  Share2: <Share2 className="w-5 h-5 text-[#d4a853]" />,
-  Target: <Target className="w-5 h-5 text-[#d4a853]" />,
-  Search: <Search className="w-5 h-5 text-[#d4a853]" />,
-  BarChart3: <BarChart3 className="w-5 h-5 text-[#d4a853]" />,
-  FileText: <FileText className="w-5 h-5 text-[#d4a853]" />,
-  Layers: <Layers className="w-5 h-5 text-[#d4a853]" />,
-  Video: <Video className="w-5 h-5 text-[#d4a853]" />,
-  Camera: <Camera className="w-5 h-5 text-[#d4a853]" />,
-  MessageSquare: <MessageSquare className="w-5 h-5 text-[#d4a853]" />,
-  Mail: <Mail className="w-5 h-5 text-[#d4a853]" />,
-  UserCheck: <UserCheck className="w-5 h-5 text-[#d4a853]" />,
-  Users: <Users className="w-5 h-5 text-[#d4a853]" />,
-  Printer: <Printer className="w-5 h-5 text-[#d4a853]" />,
-  Award: <Award className="w-5 h-5 text-[#d4a853]" />,
-  ShieldCheck: <ShieldCheck className="w-5 h-5 text-[#d4a853]" />,
-  Sparkles: <Sparkles className="w-5 h-5 text-[#d4a853]" />,
+  Briefcase: renderAnimatedIcon(<Briefcase className="w-5 h-5 text-[#d4a853]" />),
+  Rocket: renderAnimatedIcon(<Rocket className="w-5 h-5 text-[#d4a853]" />),
+  Palette: renderAnimatedIcon(<Palette className="w-5 h-5 text-[#d4a853]" />),
+  Globe: renderAnimatedIcon(<Globe className="w-5 h-5 text-[#d4a853]" />),
+  ShoppingBag: renderAnimatedIcon(<ShoppingBag className="w-5 h-5 text-[#d4a853]" />),
+  TrendingUp: renderAnimatedIcon(<TrendingUp className="w-5 h-5 text-[#d4a853]" />),
+  Share2: renderAnimatedIcon(<Share2 className="w-5 h-5 text-[#d4a853]" />),
+  Target: renderAnimatedIcon(<Target className="w-5 h-5 text-[#d4a853]" />),
+  Search: renderAnimatedIcon(<Search className="w-5 h-5 text-[#d4a853]" />),
+  BarChart3: renderAnimatedIcon(<BarChart3 className="w-5 h-5 text-[#d4a853]" />),
+  FileText: renderAnimatedIcon(<FileText className="w-5 h-5 text-[#d4a853]" />),
+  Layers: renderAnimatedIcon(<Layers className="w-5 h-5 text-[#d4a853]" />),
+  Video: renderAnimatedIcon(<Video className="w-5 h-5 text-[#d4a853]" />),
+  Camera: renderAnimatedIcon(<Camera className="w-5 h-5 text-[#d4a853]" />),
+  MessageSquare: renderAnimatedIcon(<MessageSquare className="w-5 h-5 text-[#d4a853]" />),
+  Mail: renderAnimatedIcon(<Mail className="w-5 h-5 text-[#d4a853]" />),
+  UserCheck: renderAnimatedIcon(<UserCheck className="w-5 h-5 text-[#d4a853]" />),
+  Users: renderAnimatedIcon(<Users className="w-5 h-5 text-[#d4a853]" />),
+  Printer: renderAnimatedIcon(<Printer className="w-5 h-5 text-[#d4a853]" />),
+  Award: renderAnimatedIcon(<Award className="w-5 h-5 text-[#d4a853]" />),
+  ShieldCheck: renderAnimatedIcon(<ShieldCheck className="w-5 h-5 text-[#d4a853]" />),
+  Sparkles: renderAnimatedIcon(<Sparkles className="w-5 h-5 text-[#d4a853]" />),
 };
 
 export default function ServicesSection({ onSelectService }: ServicesSectionProps) {
@@ -87,13 +104,16 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" />
+          <Badge variant="gold" className="mb-4">
+            <AnimatedIcon animation="pulse" className="mr-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+            </AnimatedIcon>
             21 End-to-End Business Solutions
-          </div>
+          </Badge>
+
           <h2 className="text-heading font-extrabold text-white mb-4">
             Everything Your Business Needs to <br />
-            <span className="gold-gradient-text">Dominate & Scale Online</span>
+            <ShinyText text="Dominate & Scale Online" speed={4} />
           </h2>
           <p className="text-subheading text-zinc-400 max-w-2xl">
             Explore our 21 specialized solutions across consulting, web development, performance marketing, video editing, printing, and brand registration.
@@ -132,10 +152,10 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
           </div>
         </div>
 
-        {/* Bento Grid Services Display */}
+        {/* Bento Grid with 3D TiltCard Containers & BorderBeam */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
-            {filteredServices.map((service) => (
+            {filteredServices.map((service, idx) => (
               <motion.div
                 key={service.id}
                 layout
@@ -143,127 +163,124 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="group relative p-6 rounded-2xl glass-card border border-white/10 hover:border-[#d4a853]/40 flex flex-col justify-between"
               >
-                {/* Popular Badge */}
-                {service.popular && (
-                  <span className="absolute top-4 right-4 text-[9px] font-extrabold uppercase font-mono px-2 py-0.5 rounded-full bg-[#d4a853]/20 text-[#d4a853] border border-[#d4a853]/40">
-                    MOST REQUESTED
-                  </span>
-                )}
+                <TiltCard className="h-full flex flex-col justify-between group">
+                  {/* BorderBeam for top requested items */}
+                  {service.popular && (
+                    <BorderBeam size={180} duration={14} delay={idx * 2} colorFrom="#d4a853" colorTo="#f0c36d" />
+                  )}
 
-                <div>
-                  {/* Icon & Category */}
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:border-[#d4a853]/50 transition-all">
-                    {ICON_MAP[service.iconName] || <Sparkles className="w-5 h-5 text-[#d4a853]" />}
+                  {/* Popular Badge */}
+                  {service.popular && (
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="gold">MOST REQUESTED</Badge>
+                    </div>
+                  )}
+
+                  <div>
+                    {/* Icon & Category */}
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:border-[#d4a853]/50 transition-all shadow-inner">
+                      {ICON_MAP[service.iconName] || <Sparkles className="w-5 h-5 text-[#d4a853]" />}
+                    </div>
+
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">
+                      {service.category}
+                    </span>
+
+                    <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#d4a853] transition-colors">
+                      {service.title}
+                    </h3>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed mb-4">
+                      {service.shortDesc}
+                    </p>
+
+                    {/* Deliverable Tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {service.deliverables.slice(0, 3).map((item, dIdx) => (
+                        <span
+                          key={dIdx}
+                          className="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/5 font-mono"
+                        >
+                          ✓ {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">
-                    {service.category}
-                  </span>
+                  {/* Actions */}
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
+                    <button
+                      onClick={() => setSelectedService(service)}
+                      className="text-xs text-zinc-300 hover:text-white flex items-center gap-1 font-medium transition-colors"
+                    >
+                      View Details
+                    </button>
 
-                  <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#d4a853] transition-colors">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-xs text-zinc-400 leading-relaxed mb-4">
-                    {service.shortDesc}
-                  </p>
-
-                  {/* Deliverable Tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {service.deliverables.slice(0, 3).map((item, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/5"
-                      >
-                        ✓ {item}
-                      </span>
-                    ))}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => onSelectService(service.title)}
+                    >
+                      <span>Inquire</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </Button>
                   </div>
-                </div>
-
-                {/* Actions */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
-                  <button
-                    onClick={() => setSelectedService(service)}
-                    className="text-xs text-zinc-300 hover:text-white flex items-center gap-1 font-medium transition-colors"
-                  >
-                    View Details
-                  </button>
-
-                  <button
-                    onClick={() => onSelectService(service.title)}
-                    className="px-3.5 py-1.5 rounded-xl bg-[#d4a853]/15 hover:bg-[#d4a853] text-[#d4a853] hover:text-black font-semibold text-xs transition-all flex items-center gap-1"
-                  >
-                    <span>Inquire Now</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
+                </TiltCard>
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
       </div>
 
-      {/* Expanded Service Detail Modal */}
-      <AnimatePresence>
-        {selectedService && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="w-full max-w-xl bg-[#0e0e12] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl relative"
-            >
-              <button
-                onClick={() => setSelectedService(null)}
-                className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 rounded-2xl bg-[#d4a853]/15 border border-[#d4a853]/30">
-                  {ICON_MAP[selectedService.iconName]}
+      {/* Expanded Service Detail Modal using shadcn Dialog */}
+      <Dialog open={!!selectedService} onOpenChange={(open) => !open && setSelectedService(null)}>
+        <DialogContent className="max-w-xl">
+          {selectedService && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 rounded-2xl bg-[#d4a853]/15 border border-[#d4a853]/30">
+                    {ICON_MAP[selectedService.iconName]}
+                  </div>
+                  <div>
+                    <Badge variant="gold">{selectedService.category}</Badge>
+                    <DialogTitle className="mt-1">{selectedService.title}</DialogTitle>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-mono text-[#d4a853] uppercase">{selectedService.category}</span>
-                  <h3 className="text-lg font-extrabold text-white">{selectedService.title}</h3>
-                </div>
-              </div>
+              </DialogHeader>
 
-              <p className="text-xs text-zinc-300 leading-relaxed mb-6">
+              <p className="text-xs text-zinc-300 leading-relaxed my-4">
                 {selectedService.fullDesc}
               </p>
 
               <h4 className="text-xs font-mono text-zinc-400 uppercase mb-3">Key Deliverables Included:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                 {selectedService.deliverables.map((del, i) => (
-                  <div key={i} className="flex items-center gap-2 p-2 rounded-xl bg-white/5 text-xs text-zinc-200">
+                  <div key={i} className="flex items-center gap-2 p-2 rounded-xl bg-white/5 text-xs text-zinc-200 border border-white/5">
                     <Check className="w-3.5 h-3.5 text-[#d4a853] shrink-0" />
                     <span>{del}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                <button
-                  onClick={() => {
-                    const title = selectedService.title;
-                    setSelectedService(null);
-                    onSelectService(title);
-                  }}
-                  className="w-full py-3 rounded-xl font-bold text-xs text-black bg-[#d4a853] hover:bg-[#f0c36d] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#d4a853]/25"
-                >
-                  <span>Request Proposal for {selectedService.title}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              <Button
+                variant="gold"
+                size="lg"
+                className="w-full"
+                onClick={() => {
+                  const title = selectedService.title;
+                  setSelectedService(null);
+                  onSelectService(title);
+                }}
+              >
+                <span>Request Proposal for {selectedService.title}</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

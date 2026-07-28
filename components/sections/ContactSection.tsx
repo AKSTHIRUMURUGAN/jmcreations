@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, MessageSquare, Send, CheckCircle2, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, MessageSquare, Send, CheckCircle2 } from "lucide-react";
 import { INITIAL_SETTINGS } from "@/lib/adminStore";
 import { InstagramIcon, LinkedinIcon, FacebookIcon } from "@/components/shared/SocialIcons";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { BorderBeam } from "@/components/ui/BorderBeam";
+import { LottieArt } from "@/components/ui/LottieArt";
 
 interface ContactSectionProps {
   prefilledService?: string;
@@ -57,8 +60,11 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Column: Direct Contact Info & Map */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            <div className="p-8 rounded-3xl glass-card border border-white/10 flex flex-col gap-6">
-              <h3 className="text-lg font-bold text-white">Contact Channels</h3>
+            <div className="p-8 rounded-3xl glass-card border border-white/10 flex flex-col gap-6 relative overflow-hidden">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white">Contact Channels</h3>
+                <LottieArt type="consulting" className="w-8 h-8" />
+              </div>
 
               <div className="flex flex-col gap-4">
                 <a
@@ -150,13 +156,20 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
             </div>
           </div>
 
-          {/* Right Column: Dual-Action Form */}
+          {/* Right Column: Dual-Action Form with BorderBeam & LottieArt */}
           <div className="lg:col-span-7">
-            <div className="p-8 sm:p-10 rounded-3xl glass-card border border-white/10 relative">
-              <h3 className="text-xl font-black text-white mb-2">Send Instant Inquiry</h3>
-              <p className="text-xs text-zinc-400 mb-8">
-                Fills out your request and immediately connects you via both WhatsApp & Email.
-              </p>
+            <div className="p-8 sm:p-10 rounded-3xl glass-card border border-white/10 relative overflow-hidden">
+              <BorderBeam size={280} duration={14} colorFrom="#d4a853" colorTo="#f0c36d" />
+
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-xl font-black text-white mb-1">Send Instant Inquiry</h3>
+                  <p className="text-xs text-zinc-400">
+                    Fills out your request and immediately connects you via both WhatsApp & Email.
+                  </p>
+                </div>
+                <LottieArt type="growth" className="w-10 h-10" />
+              </div>
 
               {submitted ? (
                 <div className="py-12 flex flex-col items-center text-center">
@@ -173,25 +186,23 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs text-zinc-400 block mb-1 font-mono">Your Name *</label>
-                      <input
+                      <Input
                         type="text"
                         required
                         placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#d4a853]"
                       />
                     </div>
 
                     <div>
                       <label className="text-xs text-zinc-400 block mb-1 font-mono">Email Address *</label>
-                      <input
+                      <Input
                         type="email"
                         required
                         placeholder="john@company.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#d4a853]"
                       />
                     </div>
                   </div>
@@ -199,13 +210,12 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs text-zinc-400 block mb-1 font-mono">Phone / WhatsApp Number *</label>
-                      <input
+                      <Input
                         type="text"
                         required
                         placeholder="+91 90429 86355"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#d4a853]"
                       />
                     </div>
 
@@ -214,7 +224,7 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                       <select
                         value={service}
                         onChange={(e) => setService(e.target.value)}
-                        className="w-full px-4 py-3 text-xs bg-[#121216] border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#d4a853]"
+                        className="w-full h-11 px-4 py-2 text-xs bg-[#121216] border border-white/10 rounded-2xl text-white focus:outline-none focus:border-[#d4a853]"
                       >
                         <option value="Business Consulting">Business Consulting</option>
                         <option value="Startup Consulting">Startup Consulting</option>
@@ -249,17 +259,14 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                       placeholder="Briefly describe your goals, budget range, and timeline..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full px-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#d4a853]"
+                      className="w-full px-4 py-3 text-xs bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-[#d4a853]"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-4 rounded-2xl font-extrabold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:from-[#f0c36d] hover:to-[#d4a853] transition-all flex items-center justify-center gap-2 shadow-xl shadow-[#d4a853]/25"
-                  >
-                    <Send className="w-4 h-4 fill-black text-black" />
+                  <Button type="submit" variant="gold" size="lg" className="w-full">
+                    <Send className="w-4 h-4 fill-black text-black mr-2" />
                     <span>Submit & Launch WhatsApp + Email Dispatch</span>
-                  </button>
+                  </Button>
                 </form>
               )}
             </div>

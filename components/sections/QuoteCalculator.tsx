@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Calculator, Check, MessageSquare, Sparkles, ArrowRight, Shield } from "lucide-react";
+import { Calculator, Check, MessageSquare, Sparkles } from "lucide-react";
 import { INITIAL_SETTINGS } from "@/lib/adminStore";
+import { ShinyText } from "@/components/ui/ShinyText";
+import { LottieArt } from "@/components/ui/LottieArt";
 
 interface OptionItem {
   id: string;
@@ -59,9 +60,10 @@ export default function QuoteCalculator() {
               <Calculator className="w-3.5 h-3.5" />
               Interactive Solution Estimator
             </div>
+            
             <h2 className="text-heading font-extrabold text-white mb-4">
               Build Your Custom <br />
-              <span className="gold-gradient-text">Business Package</span>
+              <ShinyText text="Business Package" speed={4} />
             </h2>
             <p className="text-xs text-zinc-400 mb-8">
               Select the business capabilities required for your growth goals. Receive an instant preliminary estimate and export directly to our strategy team.
@@ -98,12 +100,12 @@ export default function QuoteCalculator() {
             </div>
           </div>
 
-          {/* Right Column: Calculated Quote Box */}
+          {/* Right Column: Calculated Quote Box with Lottie Art */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl glass-card border border-white/15 shadow-2xl relative">
+            <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl glass-card border border-white/15 shadow-2xl relative overflow-hidden">
               <div className="flex items-center justify-between pb-6 border-b border-white/10">
                 <span className="text-xs font-mono text-[#d4a853] uppercase font-bold">ESTIMATE SUMMARY</span>
-                <span className="text-[10px] font-mono text-zinc-400">{selectedIds.length} Selected</span>
+                <LottieArt type="growth" className="w-8 h-8" />
               </div>
 
               {/* Total Calculation Display */}

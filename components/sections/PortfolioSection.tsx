@@ -2,114 +2,128 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowUpRight, TrendingUp, Layers, CheckCircle2 } from "lucide-react";
-import { INITIAL_PORTFOLIO, PortfolioItem } from "@/lib/adminStore";
+import { FolderGit2, ExternalLink, TrendingUp } from "lucide-react";
+import { INITIAL_PORTFOLIO } from "@/lib/adminStore";
+import { ShinyText } from "@/components/ui/ShinyText";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { Badge } from "@/components/ui/badge";
+import { DecryptedText } from "@/components/ui/DecryptedText";
 
 export default function PortfolioSection() {
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const filters = ["All", "Branding & Web", "Digital Marketing", "Events & Media"];
+  const categories = [
+    "All",
+    "Web App",
+    "Performance Marketing",
+    "Branding",
+    "Media Production",
+  ];
 
   const filteredPortfolio = INITIAL_PORTFOLIO.filter((item) => {
-    return activeFilter === "All" || item.category === activeFilter;
+    return activeCategory === "All" || item.category === activeCategory;
   });
 
   return (
-    <section id="portfolio" className="relative py-28 bg-[#070709] border-t border-white/10">
+    <section id="portfolio" className="relative py-28 bg-[#09090b] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Title */}
+        {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
-            <Layers className="w-3.5 h-3.5" />
-            Curated Case Studies & Impact
-          </div>
+          <Badge variant="gold" className="mb-4">
+            <FolderGit2 className="w-3.5 h-3.5 mr-1.5 text-[#d4a853]" />
+            Case Studies & Real Work
+          </Badge>
+
           <h2 className="text-heading font-extrabold text-white mb-4">
-            Proven Growth & <br />
-            <span className="gold-gradient-text">High-Impact Deliverables</span>
+            Proven Client Results & <br />
+            <ShinyText text="High-Impact Deliverables" speed={4} />
           </h2>
           <p className="text-subheading text-zinc-400 max-w-2xl">
-            Explore how we empower brands to achieve measurable revenue expansion, high brand prestige, and seamless digital infrastructure.
+            Explore how we've helped startups and established enterprises design luxury web apps, scale Meta & Google Ads ROI, and refine their brand presence.
           </p>
         </div>
 
-        {/* Filter Buttons */}
+        {/* Filter Categories */}
         <div className="flex items-center justify-center gap-2 mb-12 flex-wrap">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-5 py-2 rounded-xl text-xs font-medium transition-all ${
-                activeFilter === filter
-                  ? "bg-[#d4a853] text-black font-bold shadow-lg shadow-[#d4a853]/20"
-                  : "bg-white/[0.03] text-zinc-400 border border-white/10 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+          <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+                  activeCategory === cat
+                    ? "bg-[#d4a853] text-black font-bold shadow-lg shadow-[#d4a853]/20"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Portfolio Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPortfolio.map((item) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="group relative rounded-3xl glass-card overflow-hidden border border-white/10 hover:border-[#d4a853]/50 flex flex-col justify-between"
-            >
-              {/* Image Preview Container */}
-              <div className="relative h-60 w-full overflow-hidden bg-black">
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-85 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-transparent to-transparent" />
-                
-                {/* Metric Overlay Badge */}
-                <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#d4a853]/40 text-[#d4a853] text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#d4a853]" />
-                  <span>{item.metrics}</span>
-                </div>
-              </div>
+        {/* Bento Case Studies Grid with 3D TiltCard & DecryptedText */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatePresence>
+            {filteredPortfolio.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TiltCard className="h-full flex flex-col justify-between group overflow-hidden">
+                  <div>
+                    {/* Image Preview Container */}
+                    <div className="relative h-48 w-full rounded-2xl overflow-hidden mb-5 border border-white/10">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-              {/* Text Description */}
-              <div className="p-6 flex flex-col justify-between flex-1">
-                <div>
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mb-1">
-                    {item.client}
-                  </span>
-                  <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#d4a853] transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed mb-4">
-                    {item.description}
-                  </p>
-                </div>
+                      <div className="absolute top-3 right-3">
+                        <Badge variant="gold">
+                          <DecryptedText text={item.metrics} speed={25} />
+                        </Badge>
+                      </div>
+                    </div>
 
-                {/* Tags & Action */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex flex-wrap gap-1">
-                    {item.tags.map((t, idx) => (
-                      <span key={idx} className="text-[9px] px-2 py-0.5 rounded bg-white/5 text-zinc-400">
-                        {t}
-                      </span>
-                    ))}
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">
+                      {item.category} • {item.client}
+                    </span>
+
+                    <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#d4a853] transition-colors">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed mb-4">
+                      {item.description}
+                    </p>
                   </div>
 
-                  <button
-                    onClick={() => setSelectedProject(item)}
-                    className="p-2 rounded-xl bg-white/5 hover:bg-[#d4a853] text-zinc-300 hover:text-black transition-all"
-                  >
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  {/* Outcome Highlight */}
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-mono font-bold">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>Verified Growth Outcome</span>
+                    </div>
+
+                    <a
+                      href="#contact"
+                      className="p-2 rounded-xl bg-white/5 hover:bg-[#d4a853] text-zinc-400 hover:text-black transition-all"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </div>
+                </TiltCard>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

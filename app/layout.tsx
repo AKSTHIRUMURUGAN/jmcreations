@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     "Event Branding",
   ],
   authors: [{ name: "JM Creations" }],
+  icons: {
+    icon: "/logo.jpeg",
+    shortcut: "/logo.jpeg",
+    apple: "/logo.jpeg",
+  },
   openGraph: {
     title: "JM Creations | End-to-End Business Solutions Company",
     description:
@@ -39,10 +44,10 @@ export const metadata: Metadata = {
     siteName: "JM Creations",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-        width: 1200,
-        height: 630,
-        alt: "JM Creations Business Solutions",
+        url: "/logo.jpeg",
+        width: 800,
+        height: 800,
+        alt: "JM Creations Business Solutions Logo",
       },
     ],
     locale: "en_US",
@@ -52,6 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JM Creations | End-to-End Business Solutions",
     description: "End-to-end consulting, website development, performance marketing, and branding.",
+    images: ["/logo.jpeg"],
   },
 };
 
@@ -64,7 +70,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "JM Creations",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+    image: "https://jmcreations.in/logo.jpeg",
     email: "jmcreationinfo@gmail.com",
     telephone: "+919042986355",
     url: "https://jmcreations.in",
@@ -79,34 +85,12 @@ export default function RootLayout({
       "https://www.linkedin.com/in/jm-creations-971a43423",
       "https://www.facebook.com/share/19FRBKVjDX/",
     ],
-    makesOffer: [
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Consulting" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Startup Consulting" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Brand Identity & Logo Design" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Website Design & Development" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "E-commerce Website Development" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Social Media Management" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Meta Advertising" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Google Ads" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Search Engine Optimization (SEO)" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Content Creation & Copywriting" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Graphic Design" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Video Editing & Motion Graphics" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Product Photography & Videography" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "WhatsApp Marketing" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Email Marketing" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Lead Generation" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Influencer Marketing" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Printing Solutions" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Event Branding & Management" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Registration & Support" } },
-    ],
   };
 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <head>
@@ -115,7 +99,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-[#0a0a0a] text-white"
+      >
         {children}
       </body>
     </html>
