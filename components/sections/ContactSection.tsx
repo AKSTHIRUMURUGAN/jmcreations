@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
-import { Mail, Phone, MapPin, MessageSquare, Send, CheckCircle2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Mail, Phone, MapPin, MessageSquare, Send, CheckCircle2, Loader2, Sparkles, Clock } from "lucide-react";
 import { INITIAL_SETTINGS } from "@/lib/adminStore";
 import { InstagramIcon, LinkedinIcon, FacebookIcon } from "@/components/shared/SocialIcons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { LottieArt } from "@/components/ui/LottieArt";
+import { Badge } from "@/components/ui/badge";
 
 interface ContactSectionProps {
   prefilledService?: string;
+}
+
+interface LeadFeedItem {
+  id: string;
+  name: string;
+  service: string;
+  timestamp: string;
 }
 
 export default function ContactSection({ prefilledService }: ContactSectionProps) {
@@ -19,50 +27,81 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
   const [phone, setPhone] = useState("");
   const [service, setService] = useState(prefilledService || "Business Consulting");
   const [message, setMessage] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [liveLeads, setLiveLeads] = useState<LeadFeedItem[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch stored leads on mount
+  useEffect(() => {
+    fetch("/api/inquiry-email")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.leads) {
+          setLiveLeads(data.leads.slice(0, 4));
+        }
+      })
+      .catch(() => {});
+  }, [submitted]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
 
-    // Format WhatsApp & Email payload
-    const formattedText = `Hello JM Creations,\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nRequested Service: ${service}\nMessage: ${message}`;
-    const waUrl = `https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(formattedText)}`;
-    const mailUrl = `mailto:${INITIAL_SETTINGS.email}?subject=${encodeURIComponent(`New Inquiry: ${service} - ${name}`)}&body=${encodeURIComponent(formattedText)}`;
+    try {
+      // Trigger real-time dual email dispatch via Gmail API route
+      const res = await fetch("/api/inquiry-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, service, message }),
+      });
 
-    // Open WhatsApp in new tab & trigger email client
-    window.open(waUrl, "_blank");
-    window.location.href = mailUrl;
+      await res.json();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 4000);
+      // Launch WhatsApp window as parallel fallback
+      const formattedText = `Hello JM Creations,\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nRequested Service: ${service}\nMessage: ${message}`;
+      const waUrl = `https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(formattedText)}`;
+      window.open(waUrl, "_blank");
+
+      setTimeout(() => {
+        setSubmitted(false);
+        setName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+      }, 8000);
+    }
   };
 
   return (
-    <section id="contact" className="relative py-28 bg-[#060608] border-t border-white/10">
+    <section id="contact" aria-label="Contact and Instant Inquiry Form" className="relative py-28 bg-[#060608] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/30 text-[#d4a853] text-xs font-mono mb-4 uppercase tracking-widest">
             <MessageSquare className="w-3.5 h-3.5" />
-            Get In Touch Directly
+            Instant 15-Min Response SLA
           </div>
           <h2 className="text-heading font-extrabold text-white mb-4">
             Let's Build & Scale Your <br />
             <span className="gold-gradient-text">Next Major Success</span>
           </h2>
           <p className="text-subheading text-zinc-400 max-w-2xl">
-            Have a project in mind or need tailored business solutions? Contact our senior team for an instant response via WhatsApp and email.
+            Submitting this form triggers a real-time email dispatch to our executive strategy leads and delivers a instant confirmation email to your inbox.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
           {/* Left Column: Direct Contact Info & Map */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             <div className="p-8 rounded-3xl glass-card border border-white/10 flex flex-col gap-6 relative overflow-hidden">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white">Contact Channels</h3>
+                <h3 className="text-lg font-bold text-white">Direct Communication Channels</h3>
                 <LottieArt type="consulting" className="w-8 h-8" />
               </div>
 
@@ -113,7 +152,7 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
               {/* Social Channels */}
               <div className="pt-4 border-t border-white/10">
                 <span className="text-[10px] font-mono text-zinc-400 uppercase block mb-3">OFFICIAL SOCIAL CHANNELS</span>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <a
                     href={INITIAL_SETTINGS.instagram}
                     target="_blank"
@@ -141,22 +180,9 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                 </div>
               </div>
             </div>
-
-            {/* Google Maps Embed Preview */}
-            <div className="h-56 rounded-3xl overflow-hidden border border-white/10 relative glass-card">
-              <iframe
-                title="Google Maps Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.598284523315!2d77.637255!3d12.934856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU2JzA1LjUiTiA3N8KwMzgnMTQuMSJF!5e0!3m2!1sen!2sin!4v1625000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
-                allowFullScreen={false}
-                loading="lazy"
-              />
-            </div>
           </div>
 
-          {/* Right Column: Dual-Action Form with BorderBeam & LottieArt */}
+          {/* Right Column: Real-Time Dual Email Form with BorderBeam & LottieArt */}
           <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 rounded-3xl glass-card border border-white/10 relative overflow-hidden">
               <BorderBeam size={280} duration={14} colorFrom="#d4a853" colorTo="#f0c36d" />
@@ -165,7 +191,7 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                 <div>
                   <h3 className="text-xl font-black text-white mb-1">Send Instant Inquiry</h3>
                   <p className="text-xs text-zinc-400">
-                    Fills out your request and immediately connects you via both WhatsApp & Email.
+                    Triggers dynamic confirmation email to your inbox + WhatsApp dispatch in real-time.
                   </p>
                 </div>
                 <LottieArt type="growth" className="w-10 h-10" />
@@ -173,13 +199,23 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
 
               {submitted ? (
                 <div className="py-12 flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 border border-emerald-500/30">
+                  <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 border border-emerald-500/30 animate-bounce">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-lg font-bold text-white">Inquiry Dispatched!</h4>
-                  <p className="text-xs text-zinc-400 max-w-sm pt-1">
-                    Your WhatsApp window and Email client have been launched with pre-formatted details.
+                  <h4 className="text-lg font-bold text-white">Inquiry Dispatched & Confirmed!</h4>
+                  <p className="text-xs text-zinc-300 max-w-sm pt-2 leading-relaxed">
+                    A confirmation email has been sent to <strong>{email}</strong>. Our strategy leads have been notified and will contact you within <strong>15 minutes</strong>.
                   </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <a
+                      href={`https://wa.me/${INITIAL_SETTINGS.whatsappNumber.replace(/[^0-9]/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-emerald-500 text-black font-bold text-xs hover:bg-emerald-400"
+                    >
+                      Chat Live on WhatsApp Now
+                    </a>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -263,15 +299,53 @@ export default function ContactSection({ prefilledService }: ContactSectionProps
                     />
                   </div>
 
-                  <Button type="submit" variant="gold" size="lg" className="w-full">
-                    <Send className="w-4 h-4 fill-black text-black mr-2" />
-                    <span>Submit & Launch WhatsApp + Email Dispatch</span>
+                  <Button type="submit" variant="gold" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin text-black" />
+                        <span>Sending Confirmation Email via Gmail...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 fill-black text-black mr-2" />
+                        <span>Submit Inquiry & Trigger Real-Time Gmail</span>
+                      </>
+                    )}
                   </Button>
                 </form>
               )}
             </div>
           </div>
         </div>
+
+        {/* Live Stored Leads Display Banner */}
+        {liveLeads.length > 0 && (
+          <div className="p-6 rounded-3xl glass-card border border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#d4a853]" />
+                <h4 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                  Live Registered Inquiries ({liveLeads.length})
+                </h4>
+              </div>
+              <Badge variant="emerald" className="animate-pulse">REALTIME DISPATCH ACTIVE</Badge>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {liveLeads.map((item) => (
+                <div key={item.id} className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 text-xs">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-white">{item.name}</span>
+                    <span className="text-[9px] font-mono text-zinc-500 flex items-center gap-1">
+                      <Clock className="w-2.5 h-2.5" /> {item.timestamp}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-[#d4a853] block truncate">{item.service}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -8,7 +8,7 @@ import { INITIAL_SETTINGS } from "@/lib/adminStore";
 
 interface NavbarProps {
   onOpenQuote: () => void;
-  onOpenAdmin: () => void;
+  onOpenAdmin?: () => void;
 }
 
 export default function Navbar({ onOpenQuote }: NavbarProps) {
@@ -26,6 +26,7 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
   const navLinks = [
     { name: "Services", href: "/#services" },
     { name: "Price Catalogue", href: "/catalogue", badge: "₹ PRICES" },
+    { name: "Career Catalyst", href: "/catalyst", badge: "19 MODULES" },
     { name: "Portfolio", href: "/#portfolio" },
     { name: "Testimonials", href: "/#testimonials" },
     { name: "Blog", href: "/#blog" },

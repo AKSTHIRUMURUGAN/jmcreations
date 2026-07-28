@@ -66,9 +66,9 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Soft Ambient Gold Spotlight Follower */}
+      {/* Soft Ambient Gold Spotlight Follower (Always on top z-[99998]) */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-40 rounded-full mix-blend-screen"
+        className="pointer-events-none fixed top-0 left-0 z-[99998] rounded-full mix-blend-screen"
         style={{
           x: cursorX,
           y: cursorY,
@@ -76,14 +76,14 @@ export default function CustomCursor() {
           translateY: "-50%",
           width: cursorVariant === "hover" ? 320 : 260,
           height: cursorVariant === "hover" ? 320 : 260,
-          background: "radial-gradient(circle, rgba(212, 168, 83, 0.12) 0%, rgba(212, 168, 83, 0) 70%)",
+          background: "radial-gradient(circle, rgba(212, 168, 83, 0.15) 0%, rgba(212, 168, 83, 0) 70%)",
         }}
         transition={{ duration: 0.15 }}
       />
 
-      {/* Core Precision Cursor Dot & Ring */}
+      {/* Core Precision Cursor Dot & Ring (Always on top z-[99999]) */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-50 flex items-center justify-center rounded-full border border-[#d4a853]/80 bg-[#d4a853]/10 backdrop-blur-[2px]"
+        className="pointer-events-none fixed top-0 left-0 z-[99999] flex items-center justify-center rounded-full border border-[#d4a853] bg-[#d4a853]/20 backdrop-blur-[2px] shadow-lg shadow-[#d4a853]/30"
         style={{
           x: cursorX,
           y: cursorY,
@@ -93,8 +93,8 @@ export default function CustomCursor() {
         animate={{
           width: cursorVariant === "hover" ? 48 : cursorVariant === "clickable" ? 28 : 20,
           height: cursorVariant === "hover" ? 48 : cursorVariant === "clickable" ? 28 : 20,
-          borderColor: cursorVariant === "hover" ? "#f0c36d" : "rgba(212, 168, 83, 0.8)",
-          backgroundColor: cursorVariant === "hover" ? "rgba(212, 168, 83, 0.2)" : "rgba(212, 168, 83, 0.1)",
+          borderColor: cursorVariant === "hover" ? "#f0c36d" : "rgba(212, 168, 83, 0.9)",
+          backgroundColor: cursorVariant === "hover" ? "rgba(212, 168, 83, 0.3)" : "rgba(212, 168, 83, 0.15)",
         }}
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
       >
