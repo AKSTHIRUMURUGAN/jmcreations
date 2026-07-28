@@ -52,7 +52,7 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
     <section
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-screen flex flex-col justify-center pt-28 pb-16 overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-16 overflow-hidden bg-[#0a0a0a]"
     >
       {/* Background Radial Glow Spotlight */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[700px] sm:h-[900px] bg-gradient-to-tr from-[#d4a853]/20 via-[#c8946e]/8 to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -60,7 +60,7 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
       {/* Grid Overlay Line Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mb-12 sm:mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Hero Storytelling Column */}
           <div className="lg:col-span-6 flex flex-col items-start text-left relative z-20">
@@ -69,10 +69,10 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-[#d4a853]/30 backdrop-blur-md mb-6 shadow-lg shadow-[#d4a853]/10"
+              className="inline-flex items-center gap-2.5 px-3.5 sm:px-4 py-2 rounded-full bg-white/[0.04] border border-[#d4a853]/30 backdrop-blur-md mb-6 shadow-lg shadow-[#d4a853]/10"
             >
               <LordIcon iconType="star" size={20} trigger="always" />
-              <span className="text-xs font-semibold text-zinc-200">
+              <span className="text-[11px] sm:text-xs font-semibold text-zinc-200">
                 End-to-End Business Solutions Company
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#d4a853] animate-ping" />
@@ -104,9 +104,9 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-wrap items-center gap-4 w-full sm:w-auto"
+              className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
             >
-              <ShimmerButton onClick={onOpenQuote}>
+              <ShimmerButton onClick={onOpenQuote} className="w-full sm:w-auto">
                 <Sparkles className="w-4 h-4 text-black animate-pulse" />
                 <span>Start Your Growth Engine</span>
                 <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
@@ -125,36 +125,36 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
-              className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 mt-8 w-full max-w-xl"
+              className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 border-t border-white/10 mt-8 w-full max-w-xl"
             >
               <div className="flex flex-col items-start">
                 <div className="flex items-center gap-1.5">
-                  <LordIcon iconType="briefcase" size={20} />
-                  <span className="font-extrabold text-2xl text-white font-mono">
+                  <LordIcon iconType="briefcase" size={18} />
+                  <span className="font-extrabold text-xl sm:text-2xl text-white font-mono">
                     <CountUpNumber value={21} suffix="+" />
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 pt-1">Integrated Services</p>
+                <p className="text-[10px] sm:text-xs text-zinc-400 pt-1">Integrated Services</p>
               </div>
 
               <div className="flex flex-col items-start">
                 <div className="flex items-center gap-1.5">
-                  <LordIcon iconType="rocket" size={20} />
-                  <span className="font-extrabold text-2xl text-[#d4a853] font-mono">
+                  <LordIcon iconType="rocket" size={18} />
+                  <span className="font-extrabold text-xl sm:text-2xl text-[#d4a853] font-mono">
                     <CountUpNumber value={100} suffix="%" />
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 pt-1">In-House Execution</p>
+                <p className="text-[10px] sm:text-xs text-zinc-400 pt-1">In-House Execution</p>
               </div>
 
               <div className="flex flex-col items-start">
                 <div className="flex items-center gap-1.5">
-                  <LordIcon iconType="star" size={20} />
-                  <span className="font-extrabold text-2xl text-white font-mono">
+                  <LordIcon iconType="star" size={18} />
+                  <span className="font-extrabold text-xl sm:text-2xl text-white font-mono">
                     <CountUpNumber value={4} suffix="x ROI" prefix="~" />
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 pt-1">Average Client ROI</p>
+                <p className="text-[10px] sm:text-xs text-zinc-400 pt-1">Average Client ROI</p>
               </div>
             </motion.div>
           </div>
@@ -163,7 +163,7 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
           <div className="lg:col-span-6 flex justify-center items-center w-full relative z-10">
             <motion.div
               style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-              className="relative w-full h-[480px] sm:h-[560px] bg-transparent flex items-center justify-center pointer-events-auto"
+              className="relative w-full h-[340px] sm:h-[480px] lg:h-[560px] bg-transparent flex items-center justify-center pointer-events-auto"
             >
               <SplineScene
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"

@@ -114,9 +114,9 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li><Link href="/#services" className="hover:text-white transition-colors">Services</Link></li>
               <li><Link href="/catalogue" className="hover:text-white transition-colors">Price Catalogue</Link></li>
+              <li><Link href="/catalyst" className="hover:text-white transition-colors">Career Catalyst</Link></li>
               <li><Link href="/#portfolio" className="hover:text-white transition-colors">Portfolio Case Studies</Link></li>
               <li><Link href="/#testimonials" className="hover:text-white transition-colors">Testimonials</Link></li>
-              <li><Link href="/#blog" className="hover:text-white transition-colors">Insights Journal</Link></li>
               <li><Link href="/#contact" className="hover:text-white transition-colors">Contact Strategy Team</Link></li>
             </ul>
           </div>

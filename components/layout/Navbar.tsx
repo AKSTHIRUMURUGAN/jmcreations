@@ -29,7 +29,6 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
     { name: "Career Catalyst", href: "/catalyst", badge: "19 MODULES" },
     { name: "Portfolio", href: "/#portfolio" },
     { name: "Testimonials", href: "/#testimonials" },
-    { name: "Blog", href: "/#blog" },
     { name: "Contact", href: "/#contact" },
   ];
 
@@ -39,13 +38,13 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
             ? "bg-[#0a0a0c]/90 backdrop-blur-2xl border-b border-white/10 py-3 shadow-2xl"
-            : "bg-gradient-to-b from-black/80 to-transparent py-5"
+            : "bg-gradient-to-b from-black/80 to-transparent py-4 sm:py-5"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 overflow-hidden">
           {/* Official Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-11 h-11 shrink-0 rounded-xl bg-[#0a0a0a] border border-[#d4a853]/50 p-1 flex items-center justify-center shadow-lg shadow-[#d4a853]/20 transition-transform group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl bg-[#0a0a0a] border border-[#d4a853]/50 p-1 flex items-center justify-center shadow-lg shadow-[#d4a853]/20 transition-transform group-hover:scale-105">
               <img
                 src="/logo.jpeg"
                 alt="JM Creations Official Logo"
@@ -53,25 +52,25 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
               />
             </div>
             <div className="flex flex-col shrink-0">
-              <span className="font-extrabold text-sm sm:text-base tracking-tight text-white group-hover:text-[#d4a853] transition-colors flex items-center gap-1.5 leading-none">
+              <span className="font-extrabold text-xs sm:text-sm tracking-tight text-white group-hover:text-[#d4a853] transition-colors flex items-center gap-1.5 leading-none">
                 JM CREATIONS
-                <span className="text-[8px] font-semibold font-mono tracking-widest px-1.5 py-0.5 rounded bg-[#d4a853]/15 text-[#d4a853] border border-[#d4a853]/30 uppercase">
+                <span className="text-[8px] font-semibold font-mono tracking-widest px-1.5 py-0.5 rounded bg-[#d4a853]/15 text-[#d4a853] border border-[#d4a853]/30 uppercase hidden sm:inline-block">
                   SOLUTIONS
                 </span>
               </span>
-              <span className="text-[9px] text-zinc-400 tracking-wider font-mono uppercase mt-1">
+              <span className="text-[8px] sm:text-[9px] text-zinc-400 tracking-wider font-mono uppercase mt-1">
                 End-to-End Business Engine
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner">
+          <nav className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner shrink-0">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="px-3.5 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center gap-1.5 shrink-0"
+                className="px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap"
               >
                 <span>{link.name}</span>
                 {link.badge && (
@@ -84,11 +83,11 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             {/* Direct Phone Call */}
             <a
               href={`tel:${INITIAL_SETTINGS.whatsappNumber}`}
-              className="hidden xl:flex items-center gap-2 text-xs text-zinc-300 hover:text-[#d4a853] px-3.5 py-2 rounded-xl hover:bg-white/5 transition-all shrink-0 font-mono"
+              className="hidden 2xl:flex items-center gap-2 text-xs text-zinc-300 hover:text-[#d4a853] px-3.5 py-2 rounded-xl hover:bg-white/5 transition-all shrink-0 font-mono"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#d4a853]" />
               <span>{INITIAL_SETTINGS.phoneDisplay}</span>
@@ -97,7 +96,7 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
             {/* Primary CTA Button */}
             <button
               onClick={onOpenQuote}
-              className="relative group px-5 py-2.5 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:from-[#f0c36d] hover:to-[#d4a853] shadow-lg shadow-[#d4a853]/25 hover:shadow-[#d4a853]/40 transition-all flex items-center gap-2 overflow-hidden shrink-0"
+              className="relative group px-4 sm:px-5 py-2.5 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:from-[#f0c36d] hover:to-[#d4a853] shadow-lg shadow-[#d4a853]/25 hover:shadow-[#d4a853]/40 transition-all flex items-center gap-2 overflow-hidden shrink-0 whitespace-nowrap"
             >
               <Sparkles className="w-3.5 h-3.5 text-black animate-pulse" />
               <span>Get Custom Quote</span>
@@ -105,8 +104,8 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2 shrink-0">
+          {/* Mobile & Tablet Menu Button */}
+          <div className="flex xl:hidden items-center gap-2 shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white"
@@ -124,7 +123,7 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-[72px] z-30 lg:hidden bg-[#0a0a0c]/95 backdrop-blur-2xl border-b border-white/10 p-6 shadow-2xl max-h-[85vh] overflow-y-auto"
+            className="fixed inset-x-0 top-[72px] z-30 xl:hidden bg-[#0a0a0c]/95 backdrop-blur-2xl border-b border-white/10 p-6 shadow-2xl max-h-[85vh] overflow-y-auto"
           >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
