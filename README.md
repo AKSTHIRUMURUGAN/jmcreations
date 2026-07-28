@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+JM Creations – Website Requirement Details
 
-## Getting Started
+Hello,
 
-First, run the development server:
+Please find below the details required for the development of the JM Creations website.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Complete List of Services
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+JM Creations is an end-to-end business solutions company providing:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* Business Consulting
+* Startup Consulting
+* Brand Identity & Logo Design
+* Website Design & Development
+* E-commerce Website Development
+* Digital Marketing
+* Social Media Management
+* Meta (Facebook & Instagram) Advertising
+* Google Ads
+* Search Engine Optimization (SEO)
+* Content Creation & Copywriting
+* Graphic Design
+* Video Editing & Motion Graphics
+* Product Photography & Videography
+* WhatsApp Marketing
+* Email Marketing
+* Lead Generation
+* Influencer Marketing
+* Printing Solutions
+* Event Branding & Management
+* Business Registration & Startup Support
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Company Profile
 
-## Learn More
+Yes. Our company profile and service brochure will be shared separately.
 
-To learn more about Next.js, take a look at the following resources:
+3. Company Logo & Brand Colors
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Company Logo: Will be shared.
+* Brand Colors:
+   White ,Gold and black 
+4. Website Content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+We would like your team to prepare professional website content based on our services. We will review and approve the final content before publishing.
 
-## Deploy on Vercel
+5. Reference Website
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We are looking for a modern, premium, clean, and professional corporate website with smooth animations, a user-friendly interface, and a mobile-responsive design.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. Images & Videos
+
+We will share our company logo, portfolio images, project photos, and promotional videos for use on the website.
+
+7. Enquiry Email
+
+jmcreationinfo@gmail.com
+
+8. Enquiry WhatsApp Number
+
++91 90429 86355
+
+9. Domain & Hosting
+
+Please arrange both the domain registration and hosting.
+
+10. Additional Features Required
+
+* Portfolio / Projects Section
+* Client Testimonials
+* Blog / News Section
+* Career Page (Future Ready)
+* Floating WhatsApp Button
+* Click-to-Call Button
+* Google Maps Integration
+* Contact Form
+* SEO-Friendly Pages
+* Google Analytics Integration
+* Fast Loading & Mobile Responsive Design
+* SSL Security
+* Social Media Integration
+
+11. Admin Panel Requirements
+
+The admin panel should allow us to:
+
+* View and manage enquiries
+* View website visitor and click statistics
+* Edit website content
+* Add, edit, or remove services
+* Manage portfolio/projects
+* Manage blog posts
+* Update testimonials
+* Update contact details and social media links
+
+12. Social Media Links & Office Address
+
+Instagram:
+https://www.instagram.com/j_m__creation
+
+LinkedIn:
+https://www.linkedin.com/in/jm-creations-971a43423
+
+Facebook:
+https://www.facebook.com/share/19FRBKVjDX/
+
+Office Address:
+Will be shared.
+
+Website Objective
+
+The website should professionally showcase JM Creations as an end-to-end business solutions company. It should build trust, clearly present all services, generate enquiries through a contact form, and instantly send enquiry notifications via both WhatsApp and email. The website should have a modern, premium, responsive design with an easy-to-use admin panel for managing enquiries, content, and visitor statistics.
+
+If any additional information is required, please let us know. We look forward to working with you.
