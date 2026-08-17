@@ -113,6 +113,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li><Link href="/#services" className="hover:text-white transition-colors">Services</Link></li>
+              <li><Link href="/our-impact" className="hover:text-[#d4a853] text-[#d4a853] font-semibold transition-colors flex items-center gap-1">★ Our Real Impact</Link></li>
               <li><Link href="/catalogue" className="hover:text-white transition-colors">Price Catalogue</Link></li>
               <li><Link href="/catalyst" className="hover:text-white transition-colors">Career Catalyst</Link></li>
               <li><Link href="/#portfolio" className="hover:text-white transition-colors">Portfolio Case Studies</Link></li>

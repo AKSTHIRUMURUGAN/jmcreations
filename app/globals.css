@@ -85,6 +85,15 @@ body {
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(calc(-100% - var(--gap, 1rem)));
+  }
+}
+
 .animate-border-beam {
   animation: border-beam var(--duration, 15s) infinite linear;
 }
@@ -95,6 +104,20 @@ body {
 
 .animate-shimmer {
   animation: shimmer 2.5s infinite linear;
+}
+
+.animate-marquee {
+  animation: marquee var(--duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.direction-reverse {
+  animation-direction: reverse;
+}
+
+.animate-marquee-reverse {
+  animation: marquee var(--duration, 40s) linear infinite reverse;
+  will-change: transform;
 }
 
 /* Custom Scrollbar */

@@ -417,9 +417,9 @@ export const INITIAL_SETTINGS: AppSettings = {
   whatsappDisplay: "+91 90429 86355",
   phoneDisplay: "+91 90429 86355",
   address: "JM Creations Corporate Tower, Suite 402, Business District, India",
-  instagram: "https://www.instagram.com/j_m__creation",
+  instagram: "https://www.instagram.com/j_m__creation?igsh=MXd1ZmYyZ3BjMGY4bQ==",
   linkedin: "https://www.linkedin.com/in/jm-creations-971a43423",
-  facebook: "https://www.facebook.com/share/19FRBKVjDX/",
+  facebook: "https://www.facebook.com/share/1FmaRxEFwv/?mibextid=wwXIfr",
 };
 
 export const INITIAL_ENQUIRIES: EnquiryItem[] = [

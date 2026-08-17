@@ -25,6 +25,7 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
 
   const navLinks = [
     { name: "Services", href: "/#services" },
+    { name: "Our Impact", href: "/our-impact", badge: "REAL PROOF" },
     { name: "Price Catalogue", href: "/catalogue", badge: "₹ PRICES" },
     { name: "Career Catalyst", href: "/catalyst", badge: "19 MODULES" },
     { name: "Portfolio", href: "/#portfolio" },
