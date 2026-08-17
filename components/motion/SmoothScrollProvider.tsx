@@ -9,14 +9,16 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     async function initLenis() {
       try {
         const Lenis = (await import("lenis")).default;
+        const isMobile = window.innerWidth < 1024 || "ontouchstart" in window;
         lenis = new Lenis({
-          duration: 1.2,
+          duration: isMobile ? 0.8 : 1.2,
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           orientation: "vertical",
           gestureOrientation: "vertical",
           smoothWheel: true,
+          syncTouch: false,
           wheelMultiplier: 1.0,
-          touchMultiplier: 1.5,
+          touchMultiplier: 1.0,
         });
 
         function raf(time: number) {

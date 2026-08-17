@@ -146,12 +146,14 @@ export default function InstagramWorksGrid() {
               </div>
 
               {/* Media Thumbnail Container */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-950">
+                {/* Skeleton Shimmer */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.06] to-white/[0.02] animate-pulse pointer-events-none" />
                 <img
                   src={work.imageUrl}
                   alt={work.title}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-10"
                 />
 
                 {/* Top Badge Overlay */}

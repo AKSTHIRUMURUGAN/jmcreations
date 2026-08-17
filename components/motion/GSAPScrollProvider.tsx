@@ -18,84 +18,75 @@ export default function GSAPScrollProvider({ children }: GSAPScrollProviderProps
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;
 
+    // Check if device is mobile or touch-enabled
+    const isMobile = window.innerWidth < 1024 || "ontouchstart" in window;
+
+    // On mobile screens, do NOT force GSAP opacity overrides to prevent blank elements
+    if (isMobile) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       const sections = containerRef.current?.querySelectorAll("section");
 
       sections?.forEach((section, index) => {
-        // Skip initial hero elements so top hero is instantly visible
-        const isHero = index === 0;
+        // Skip hero section so it remains visible immediately
+        if (index === 0) return;
 
-        const titles = section.querySelectorAll("h1, h2, h3, .text-hero, .text-heading");
-        const badges = section.querySelectorAll(".inline-flex, .badge, [class*='rounded-full']");
-        const cards = section.querySelectorAll(".group, [class*='rounded-3xl'], [class*='glass-card']");
+        const titles = section.querySelectorAll(".gsap-title");
+        const cards = section.querySelectorAll(".gsap-card");
 
-        if (!isHero) {
-          // Hide all section elements initially
-          if (titles.length > 0) gsap.set(titles, { opacity: 0, y: 55 });
-          if (badges.length > 0) gsap.set(badges, { opacity: 0, scale: 0.8 });
-          if (cards.length > 0) gsap.set(cards, { opacity: 0, y: 65, scale: 0.94 });
-
-          // Animate titles with deliberate delay when section is centered in viewport (top 65%)
-          if (titles.length > 0) {
-            gsap.to(Array.from(titles), {
+        if (titles.length > 0) {
+          gsap.fromTo(
+            Array.from(titles),
+            { opacity: 0, y: 30 },
+            {
               opacity: 1,
               y: 0,
-              duration: 0.9,
-              delay: 0.15,
-              ease: "power3.out",
-              stagger: 0.12,
-              scrollTrigger: {
-                trigger: section,
-                start: "top 68%",
-                toggleActions: "play none none reverse",
-              },
-            });
-          }
-
-          // Animate badges with deliberate delay
-          if (badges.length > 0) {
-            gsap.to(Array.from(badges), {
-              opacity: 1,
-              scale: 1,
-              duration: 0.75,
-              delay: 0.25,
-              ease: "back.out(1.7)",
+              duration: 0.7,
+              ease: "power2.out",
               stagger: 0.1,
               scrollTrigger: {
                 trigger: section,
-                start: "top 68%",
-                toggleActions: "play none none reverse",
+                start: "top 80%",
+                toggleActions: "play none none none",
+                once: true,
               },
-            });
-          }
+            }
+          );
+        }
 
-          // Animate cards with deliberate delay so user watches the cascade in view
-          if (cards.length > 0) {
-            gsap.to(Array.from(cards), {
+        if (cards.length > 0) {
+          gsap.fromTo(
+            Array.from(cards),
+            { opacity: 0, y: 35 },
+            {
               opacity: 1,
               y: 0,
-              scale: 1,
-              duration: 0.9,
-              delay: 0.35,
-              stagger: 0.15,
-              ease: "power3.out",
+              duration: 0.7,
+              ease: "power2.out",
+              stagger: 0.08,
               scrollTrigger: {
                 trigger: section,
-                start: "top 65%",
-                toggleActions: "play none none reverse",
+                start: "top 78%",
+                toggleActions: "play none none none",
+                once: true,
               },
-            });
-          }
+            }
+          );
         }
       });
     }, containerRef);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 400);
+    }, 500);
 
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
   }, []);
 
-  return <div ref={containerRef}>{children}</div>;
+  return <div ref={containerRef} className="w-full">{children}</div>;
 }

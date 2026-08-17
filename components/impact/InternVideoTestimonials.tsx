@@ -44,14 +44,17 @@ function VideoCardPreview({
       onClick={onOpen}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative aspect-[16/10] w-full overflow-hidden bg-black cursor-pointer group/thumb"
+      className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-950 cursor-pointer group/thumb"
     >
+      {/* Skeleton Shimmer */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.06] to-white/[0.02] animate-pulse pointer-events-none" />
+
       {/* Fallback Poster Image */}
       <img
         src={video.thumbnailUrl}
         alt={video.internName}
         referrerPolicy="no-referrer"
-        className={`w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500 ${
+        className={`w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500 relative z-10 ${
           hasVideoLoaded ? "opacity-0 absolute inset-0" : "opacity-80"
         }`}
       />

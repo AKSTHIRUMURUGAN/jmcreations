@@ -158,14 +158,16 @@ export default function LinkedInImpactGrid() {
               </div>
 
               {/* Post Thumbnail / Visual Proof */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden bg-black/60 border-y border-white/10">
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-950 border-y border-white/10">
+                {/* Skeleton Shimmer */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.06] to-white/[0.02] animate-pulse pointer-events-none" />
                 <img
                   src={post.imageProof}
                   alt={post.postHeadline}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-10"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-4 z-20">
                   <span className="text-[10px] font-mono text-zinc-300 bg-black/60 px-2.5 py-1 rounded-md backdrop-blur-md">
                     Click to view original LinkedIn post
                   </span>

@@ -38,14 +38,14 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? "bg-[#0a0a0c]/90 backdrop-blur-2xl border-b border-white/10 py-3 shadow-2xl"
-            : "bg-gradient-to-b from-black/80 to-transparent py-4 sm:py-5"
+            ? "bg-[#0a0a0c]/90 backdrop-blur-2xl border-b border-white/10 py-2.5 sm:py-3 shadow-2xl"
+            : "bg-gradient-to-b from-black/80 to-transparent py-3.5 sm:py-5"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 overflow-hidden">
+        <div className="max-w-7xl 2xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4">
           {/* Official Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl bg-[#0a0a0a] border border-[#d4a853]/50 p-1 flex items-center justify-center shadow-lg shadow-[#d4a853]/20 transition-transform group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 rounded-xl bg-[#0a0a0a] border border-[#d4a853]/50 p-1 flex items-center justify-center shadow-lg shadow-[#d4a853]/20 transition-transform group-hover:scale-105">
               <img
                 src="/logo.jpeg"
                 alt="JM Creations Official Logo"
@@ -66,16 +66,16 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner shrink-0">
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 px-2.5 2xl:px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner shrink-0">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap"
+                className="px-2.5 2xl:px-3 py-1 text-[11.5px] 2xl:text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap"
               >
                 <span>{link.name}</span>
                 {link.badge && (
-                  <span className="text-[8px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-[#d4a853] text-black">
+                  <span className="text-[7.5px] 2xl:text-[8px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-[#d4a853] text-black shrink-0 leading-none">
                     {link.badge}
                   </span>
                 )}
@@ -84,11 +84,11 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Direct Phone Call */}
             <a
               href={`tel:${INITIAL_SETTINGS.whatsappNumber}`}
-              className="hidden 2xl:flex items-center gap-2 text-xs text-zinc-300 hover:text-[#d4a853] px-3.5 py-2 rounded-xl hover:bg-white/5 transition-all shrink-0 font-mono"
+              className="hidden 2xl:flex items-center gap-2 text-xs text-zinc-300 hover:text-[#d4a853] px-3 py-2 rounded-xl hover:bg-white/5 transition-all shrink-0 font-mono"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#d4a853]" />
               <span>{INITIAL_SETTINGS.phoneDisplay}</span>
@@ -97,11 +97,11 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
             {/* Primary CTA Button */}
             <button
               onClick={onOpenQuote}
-              className="relative group px-4 sm:px-5 py-2.5 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:from-[#f0c36d] hover:to-[#d4a853] shadow-lg shadow-[#d4a853]/25 hover:shadow-[#d4a853]/40 transition-all flex items-center gap-2 overflow-hidden shrink-0 whitespace-nowrap"
+              className="relative group px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:from-[#f0c36d] hover:to-[#d4a853] shadow-lg shadow-[#d4a853]/25 hover:shadow-[#d4a853]/40 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-black animate-pulse" />
-              <span>Get Custom Quote</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <Sparkles className="w-3.5 h-3.5 text-black animate-pulse shrink-0" />
+              <span className="shrink-0">Get Custom Quote</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
             </button>
           </div>
 
@@ -109,7 +109,7 @@ export default function Navbar({ onOpenQuote }: NavbarProps) {
           <div className="flex xl:hidden items-center gap-2 shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white"
+              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white cursor-pointer"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>

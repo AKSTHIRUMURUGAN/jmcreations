@@ -138,20 +138,20 @@ body {
 
 /* Typography Fluid Scaling */
 .text-hero {
-  font-size: clamp(2.5rem, 5vw + 1rem, 5.5rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 4.5vw + 0.8rem, 5.5rem);
+  line-height: 1.08;
   letter-spacing: -0.03em;
 }
 
 .text-heading {
-  font-size: clamp(1.8rem, 3.5vw + 0.5rem, 3.2rem);
-  line-height: 1.15;
+  font-size: clamp(1.5rem, 3vw + 0.5rem, 3.2rem);
+  line-height: 1.18;
   letter-spacing: -0.02em;
 }
 
 .text-subheading {
-  font-size: clamp(1.1rem, 1.5vw + 0.2rem, 1.4rem);
-  line-height: 1.5;
+  font-size: clamp(0.95rem, 1.2vw + 0.2rem, 1.35rem);
+  line-height: 1.55;
 }
 
 /* Glassmorphism & Liquid Surfaces */

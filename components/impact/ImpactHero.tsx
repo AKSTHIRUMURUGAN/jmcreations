@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
   Pause,
@@ -10,20 +10,30 @@ import {
   Maximize2,
   Sparkles,
   ShieldCheck,
-  HeartHandshake,
+  Headphones,
   ArrowDown,
   FolderLock,
   ExternalLink,
+  Loader2,
 } from "lucide-react";
 import { HERO_VIDEO_DATA } from "@/lib/impactData";
-import { Badge } from "@/components/ui/badge";
-import { ShinyText } from "@/components/ui/ShinyText";
 
 export default function ImpactHero() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      // Ensure initial autoplay attempt
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((err) => {
+        console.warn("Autoplay muted required:", err);
+      });
+    }
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -31,8 +41,9 @@ export default function ImpactHero() {
         videoRef.current.pause();
         setIsPlaying(false);
       } else {
-        videoRef.current.play();
-        setIsPlaying(true);
+        videoRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(console.error);
       }
     }
   };
@@ -44,6 +55,14 @@ export default function ImpactHero() {
     }
   };
 
+  const toggleFullscreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      }
+    }
+  };
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -52,194 +71,204 @@ export default function ImpactHero() {
   };
 
   return (
-    <section className="relative min-h-[90vh] pt-32 pb-20 overflow-hidden flex flex-col justify-center">
-      {/* Cinematic Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[900px] h-[450px] bg-gradient-to-tr from-[#d4a853]/15 via-[#f0c36d]/5 to-transparent blur-[140px] pointer-events-none" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-[#10b981]/10 blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        {/* Top Badges & Mission Statement */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12"
+    <section className="relative min-h-[100dvh] sm:min-h-screen flex flex-col justify-between pt-28 sm:pt-32 pb-12 sm:pb-16 overflow-hidden bg-[#060608]">
+      {/* =========================================================================
+          BACKGROUND VIDEO LAYER (AUTOPLAY LOOP + PROGRESSIVE STREAMING)
+          ========================================================================= */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Skeleton & Poster Placeholder */}
+        <div
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+            isVideoLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+          style={{ backgroundImage: `url(${HERO_VIDEO_DATA.videoPoster})` }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#d4a853]/30 backdrop-blur-md mb-6 shadow-lg shadow-[#d4a853]/10">
-            <ShieldCheck className="w-4 h-4 text-[#d4a853]" />
-            <span className="text-xs font-mono font-bold tracking-widest text-[#d4a853] uppercase">
+          {/* Skeleton Shimmer Overlay */}
+          {!isVideoLoaded && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
+                <Loader2 className="w-3.5 h-3.5 text-[#d4a853] animate-spin" />
+                <span className="text-[10px] font-mono text-zinc-400">Loading ground reel...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <video
+          ref={videoRef}
+          src={HERO_VIDEO_DATA.videoSrc}
+          poster={HERO_VIDEO_DATA.videoPoster}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          preload="auto"
+          onLoadedData={() => setIsVideoLoaded(true)}
+          onCanPlay={() => setIsVideoLoaded(true)}
+          className="w-full h-full object-cover scale-[1.01] brightness-[0.88] contrast-[1.08] transition-opacity duration-700 ease-out"
+          style={{ opacity: isVideoLoaded ? 1 : 0.9 }}
+        />
+
+        {/* Cinematic Lightweight Scrim & Vignette Overlays (Clearer Video) */}
+        {/* Top Fade for Navbar */}
+        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#0a0a0a]/85 via-[#0a0a0a]/35 to-transparent" />
+        
+        {/* Center Transparent Scrim for Video Clarity */}
+        <div className="absolute inset-0 bg-black/25 backdrop-contrast-[1.02]" />
+
+        {/* Bottom Fade */}
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-transparent" />
+
+        {/* Subtle Ambient Brand Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-[#d4a853]/10 via-[#f0c36d]/5 to-transparent blur-[140px]" />
+      </div>
+
+      {/* =========================================================================
+          HERO FOREGROUND CONTENT
+          ========================================================================= */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full my-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center text-center max-w-4xl mx-auto"
+        >
+          {/* Glowing Top Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-black/75 border border-[#d4a853]/40 backdrop-blur-xl mb-5 sm:mb-6 shadow-2xl shadow-black/80 max-w-full">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#d4a853] shrink-0" />
+            <span className="text-[10px] sm:text-xs font-mono font-bold tracking-wider sm:tracking-widest text-[#d4a853] uppercase truncate">
               100% Verified Ground Reality • Zero Filtered PR
             </span>
           </div>
 
-          <h1 className="text-hero font-black tracking-tight text-white mb-6 leading-tight">
-            We Are Not Just A Brand. <br />
+          {/* Hero Typography */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white mb-4 sm:mb-6 leading-[1.1] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+            We Are Not Just A Brand. <br className="hidden xs:block" />
             <span className="gold-gradient-text">Our Real Impact Speaks.</span>
           </h1>
 
-          <p className="text-subheading text-zinc-300 max-w-2xl leading-relaxed mb-8">
+          <p className="text-xs sm:text-base md:text-lg text-zinc-100 max-w-2xl leading-relaxed mb-6 sm:mb-10 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] bg-black/35 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl backdrop-blur-sm border border-white/10">
             No scripted actors. No fake 5-star screenshots. Only genuine transformations, heartfelt student audio notes, live auditorium sessions, and verifiable career milestones.
           </p>
 
-          {/* Quick Action Navigation Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          {/* Quick Action Buttons (Responsive Mobile Stacking) */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto mb-6 sm:mb-8">
             <button
-              onClick={() => scrollToSection("video-story")}
-              className="px-6 py-3 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:shadow-xl hover:shadow-[#d4a853]/25 transition-all flex items-center gap-2 group cursor-pointer"
+              onClick={() => scrollToSection("student-feedback")}
+              className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-xs text-black bg-gradient-to-r from-[#d4a853] via-[#f0c36d] to-[#d4a853] hover:shadow-xl hover:shadow-[#d4a853]/30 transition-all flex items-center justify-center gap-2 group cursor-pointer hover:scale-105 active:scale-95"
             >
-              <Play className="w-3.5 h-3.5 fill-black group-hover:scale-110 transition-transform" />
-              <span>Watch Ground Story Film</span>
+              <span>Explore Student Proof</span>
+              <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-1 transition-transform" />
             </button>
 
             <button
-              onClick={() => scrollToSection("student-feedback")}
-              className="px-6 py-3 rounded-full font-bold text-xs text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#d4a853]/50 transition-all flex items-center gap-2 cursor-pointer"
+              onClick={() => scrollToSection("audio-testimonials")}
+              className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-bold text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-[#d4a853]/60 backdrop-blur-xl transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-105 active:scale-95 shadow-lg shadow-black/40"
             >
-              <HeartHandshake className="w-4 h-4 text-[#d4a853]" />
-              <span>Explore Student Testimonials</span>
+              <Headphones className="w-4 h-4 text-[#d4a853]" />
+              <span>Listen To Voice Notes</span>
             </button>
 
             <a
               href={HERO_VIDEO_DATA.driveProofUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-3 rounded-full font-mono text-xs text-zinc-400 hover:text-white bg-transparent hover:bg-white/5 border border-white/5 hover:border-white/15 transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-4 sm:px-5 py-3 sm:py-3.5 rounded-full font-mono text-xs text-zinc-300 hover:text-white bg-black/40 hover:bg-black/60 border border-white/10 hover:border-white/25 backdrop-blur-xl transition-all flex items-center justify-center gap-2 shadow-lg"
             >
               <FolderLock className="w-3.5 h-3.5 text-[#10b981]" />
-              <span>Open Drive Archives</span>
+              <span>Open Drive Master</span>
               <ExternalLink className="w-3 h-3 opacity-60" />
             </a>
           </div>
         </motion.div>
+      </div>
 
-        {/* Cinematic Video Showcase Frame */}
-        <motion.div
-          id="video-story"
-          initial={{ opacity: 0, scale: 0.95, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
-          className="relative max-w-5xl mx-auto rounded-3xl overflow-hidden border border-[#d4a853]/40 bg-gradient-to-b from-white/[0.08] to-black/90 p-2 sm:p-3 shadow-2xl shadow-black/80"
-        >
-          {/* Outer Ambient Glow Ring */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d4a853]/30 via-transparent to-[#10b981]/20 rounded-3xl blur-xl opacity-60 pointer-events-none" />
-
-          <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black/95 group">
-            {/* Check if video source is Google Drive */}
-            {HERO_VIDEO_DATA.videoSrc.includes("drive.google.com") ? (
-              <div className="relative w-full h-full">
-                <iframe
-                  src={HERO_VIDEO_DATA.videoSrc}
-                  allow="autoplay; fullscreen"
-                  allowFullScreen
-                  className="w-full h-full border-0 rounded-2xl bg-black"
-                  title="JM Creations Real Impact Hero Video"
-                />
-              </div>
-            ) : (
-              <>
-                {/* Standard Video Element */}
-                <video
-                  ref={videoRef}
-                  src={HERO_VIDEO_DATA.videoSrc}
-                  poster={HERO_VIDEO_DATA.videoPoster}
-                  loop
-                  autoPlay
-                  muted={isMuted}
-                  playsInline
-                  className="w-full h-full object-cover"
-                  onClick={togglePlay}
-                />
-
-                {/* Video Overlay Tint & Grain */}
-                <div
-                  onClick={togglePlay}
-                  className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30 transition-opacity duration-300 cursor-pointer ${
-                    isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-                  }`}
-                />
-
-                {/* Center Big Play Button (When Paused) */}
-                {!isPlaying && (
-                  <div
-                    onClick={togglePlay}
-                    className="absolute inset-0 flex flex-col items-center justify-center gap-4 cursor-pointer z-20"
-                  >
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#d4a853] text-black flex items-center justify-center shadow-2xl shadow-[#d4a853]/60 transition-transform duration-300 hover:scale-110 active:scale-95">
-                      <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-black translate-x-0.5" />
-                    </div>
-                    <div className="text-center px-4">
-                      <span className="text-xs sm:text-sm font-bold tracking-wide uppercase text-white drop-shadow-md">
-                        Play Ground Impact Film ({HERO_VIDEO_DATA.videoDuration})
-                      </span>
-                      <p className="text-[11px] text-zinc-300 max-w-sm mt-1 drop-shadow">
-                        Real classroom audio, stage keynotes, and student reactions
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* Top Video Header Overlay */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/10">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider">
-                  Ground Story Reel • In Loop
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 pointer-events-auto">
-                <a
-                  href="https://drive.google.com/file/d/13-CRcBu2DP9K5bCoh19gzR_0rtwl9zXU/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-black/70 hover:bg-[#d4a853] text-zinc-300 hover:text-black text-[10px] font-mono font-bold backdrop-blur-md border border-white/10 transition-all flex items-center gap-1.5"
-                  title="Open Original Video in Google Drive"
-                >
-                  <span>Drive Master HD</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-
-            {/* Bottom Controls Bar (Visible on Hover or Play) */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between px-4 py-2.5 rounded-xl bg-black/80 backdrop-blur-xl border border-white/10 z-20">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={togglePlay}
-                  className="p-1.5 rounded-lg bg-white/10 hover:bg-[#d4a853] text-white hover:text-black transition-all"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-                </button>
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">Campus Transformation Story</span>
-                  <span className="text-[10px] text-zinc-400 font-mono">Recorded Live Across 48+ Colleges</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-                <Sparkles className="w-3.5 h-3.5 text-[#d4a853]" />
-                <span className="hidden sm:inline">Unfiltered Reality</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Video Sub-Manifesto Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 sm:p-6 bg-black/40 border-t border-white/10">
+      {/* =========================================================================
+          HERO FOOTER: MANIFESTO HIGHLIGHTS + FLOATING VIDEO CONTROLLER
+          ========================================================================= */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4 pt-3 sm:pt-4 border-t border-white/10">
+          
+          {/* Glass Manifesto Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 w-full lg:w-auto flex-1">
             {HERO_VIDEO_DATA.manifesto.map((line, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5"
+                className="flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-black/50 border border-white/10 backdrop-blur-md hover:border-[#d4a853]/40 transition-colors"
               >
-                <span className="w-5 h-5 rounded-full bg-[#d4a853]/15 text-[#d4a853] text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#d4a853]/20 border border-[#d4a853]/40 text-[#d4a853] text-[10px] sm:text-[11px] font-mono font-bold flex items-center justify-center shrink-0">
                   0{idx + 1}
                 </span>
-                <p className="text-xs text-zinc-300 leading-relaxed">{line}</p>
+                <p className="text-[10px] sm:text-[11px] font-medium text-zinc-300 line-clamp-2">{line}</p>
               </div>
             ))}
           </div>
-        </motion.div>
+
+          {/* Floating Ambient Video Controls Dock */}
+          <div className="flex items-center justify-center sm:justify-end gap-1.5 sm:gap-2 p-1.5 rounded-2xl bg-black/75 border border-white/15 backdrop-blur-2xl shadow-2xl shrink-0 w-full sm:w-auto">
+            {/* Live Indicator */}
+            <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-[10px] font-mono font-bold text-zinc-300 uppercase tracking-wider">
+                Live Ground Reel
+              </span>
+            </div>
+
+            {/* Play / Pause Toggle */}
+            <button
+              onClick={togglePlay}
+              className="p-2 rounded-xl bg-white/5 hover:bg-[#d4a853] text-white hover:text-black transition-all cursor-pointer"
+              title={isPlaying ? "Pause Background Reel" : "Play Background Reel"}
+            >
+              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+            </button>
+
+            {/* Mute / Unmute Toggle */}
+            <button
+              onClick={toggleMute}
+              className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                isMuted
+                  ? "bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white"
+                  : "bg-[#d4a853] text-black font-bold shadow-lg shadow-[#d4a853]/25"
+              }`}
+              title={isMuted ? "Unmute Background Video" : "Mute Background Video"}
+            >
+              {isMuted ? (
+                <VolumeX className="w-3.5 h-3.5" />
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5" />
+                  <span className="text-[10px] font-mono tracking-tight pr-0.5">Sound On</span>
+                </>
+              )}
+            </button>
+
+            {/* Fullscreen Master Button */}
+            <button
+              onClick={toggleFullscreen}
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-all cursor-pointer hidden sm:block"
+              title="Fullscreen Video"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Direct Drive Link */}
+            <a
+              href={HERO_VIDEO_DATA.driveProofUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-all cursor-pointer"
+              title="Open Original Video in Google Drive"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+        </div>
       </div>
     </section>
   );

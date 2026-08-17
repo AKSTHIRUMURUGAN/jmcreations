@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     const responseHeaders: Record<string, string> = {
       "Content-Type": contentType.includes("video") || contentType.includes("octet") ? "video/mp4" : contentType,
       "Accept-Ranges": acceptRanges,
-      "Cache-Control": "public, max-age=86400, s-maxage=86400",
+      "Cache-Control": "public, max-age=31536000, immutable",
     };
 
     if (contentRange) {

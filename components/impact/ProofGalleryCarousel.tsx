@@ -139,7 +139,10 @@ export default function ProofGalleryCarousel() {
         {/* View Mode 1: Spotlight Carousel */}
         {viewMode === "carousel" && filteredItems.length > 0 && activeItem && (
           <div className="relative max-w-5xl mx-auto rounded-3xl overflow-hidden border border-white/15 bg-gradient-to-b from-white/[0.04] to-black/80 p-3 sm:p-4 shadow-2xl mb-12">
-            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-black group">
+            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-zinc-950 group">
+              {/* Image Loading Skeleton Shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.07] to-white/[0.02] animate-pulse pointer-events-none" />
+
               <AnimatePresence mode="wait">
                 <motion.img
                   key={activeItem.id}
@@ -152,11 +155,11 @@ export default function ProofGalleryCarousel() {
                       e.currentTarget.src = FALLBACK_EVENT_IMAGE;
                     }
                   }}
-                  initial={{ opacity: 0, scale: 1.03 }}
+                  initial={{ opacity: 0, scale: 1.02 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full h-full object-cover"
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="w-full h-full object-cover relative z-10"
                 />
               </AnimatePresence>
 
@@ -277,7 +280,9 @@ export default function ProofGalleryCarousel() {
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] hover:border-[#d4a853]/50 group relative transition-all duration-300 hover:shadow-xl hover:shadow-[#d4a853]/10"
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-black">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950">
+                  {/* Skeleton Shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.06] to-white/[0.02] animate-pulse pointer-events-none" />
                   <img
                     src={item.imageUrl}
                     alt={item.title}
@@ -287,7 +292,7 @@ export default function ProofGalleryCarousel() {
                         e.currentTarget.src = FALLBACK_EVENT_IMAGE;
                       }
                     }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-10"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-4">
                     <button

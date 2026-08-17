@@ -117,15 +117,15 @@ export const HERO_VIDEO_DATA: HeroVideoConfig = {
   headline: "Not Just Another Brand.",
   subheadline: "Real Ground Transformation. Zero Filters. From Student Hearts.",
   manifesto: [
-    "Most companies present fabricated quotes and scripted marketing videos.",
-    "We show real WhatsApp audio notes, unedited handwritten survey sheets, live college auditorium stages, and verified LinkedIn milestones.",
-    "Every testimonial on this page comes directly from real students whose career trajectories were transformed through our workshops and Career Catalyst programs.",
+    "Real WhatsApp audio notes, unedited feedback, and verified LinkedIn milestones.",
+    "Hands-on coding, hardware prototyping & real client deployments over theory.",
+    "5,200+ students empowered across 48+ engineering & arts institutions.",
   ],
-  // Google Drive Hero Video
-  videoSrc: "https://drive.google.com/file/d/13-CRcBu2DP9K5bCoh19gzR_0rtwl9zXU/preview",
-  videoPoster: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600&auto=format&fit=crop",
-  videoDuration: "Real Ground Reel",
-  driveProofUrl: "https://drive.google.com/open?id=1mE7i_94TTlgFu_Boz4RwsrQvMaK4o47z",
+  // Internal high-speed video proxy for Google Drive
+  videoSrc: "/api/video-proxy?id=13-CRcBu2DP9K5bCoh19gzR_0rtwl9zXU",
+  videoPoster: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1920&auto=format&fit=crop",
+  videoDuration: "Live Ground Reel",
+  driveProofUrl: "https://drive.google.com/file/d/13-CRcBu2DP9K5bCoh19gzR_0rtwl9zXU/view",
 };
 
 /* =========================================================================
