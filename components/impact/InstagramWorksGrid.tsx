@@ -88,6 +88,63 @@ export default function InstagramWorksGrid() {
               transition={{ duration: 0.4, delay: idx * 0.08 }}
               className="group rounded-3xl overflow-hidden bg-gradient-to-b from-white/[0.05] to-white/[0.02] border border-white/10 hover:border-[#d4a853]/60 transition-all duration-300 hover:shadow-2xl hover:shadow-[#d4a853]/15 flex flex-col justify-between"
             >
+              {/* Creator / Brand Profile Header */}
+              <div className="p-5 pb-3 flex items-center justify-between border-b border-white/10 bg-black/40">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-black border border-[#d4a853]/40 p-0.5 flex items-center justify-center shrink-0 overflow-hidden shadow-md">
+                    {work.authorAvatar ? (
+                      <img
+                        src={work.authorAvatar}
+                        alt={work.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          const fallback = e.currentTarget.parentElement?.querySelector(".avatar-fallback");
+                          if (fallback) (fallback as HTMLElement).style.display = "flex";
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className={`avatar-fallback w-full h-full rounded-lg bg-gradient-to-br from-[#d4a853] to-[#a17826] text-black font-black text-xs flex items-center justify-center font-mono ${
+                        work.authorAvatar ? "hidden" : "flex"
+                      }`}
+                    >
+                      {work.handle
+                        ?.replace("@", "")
+                        .split("_")
+                        .map((n) => n[0])
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase() || "JM"}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-white group-hover:text-[#d4a853] transition-colors">
+                        {work.handle}
+                      </span>
+                      {work.platform === "YouTube" ? (
+                        <div className="w-3.5 h-3.5 rounded-full bg-[#ff0000] text-white flex items-center justify-center text-[8px] font-bold shrink-0">
+                          ▶
+                        </div>
+                      ) : (
+                        <div className="w-3.5 h-3.5 rounded-full bg-[#e1306c] text-white flex items-center justify-center text-[8px] font-bold shrink-0">
+                          ✓
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-[10px] font-mono text-zinc-500">{work.badge || work.category}</span>
+                  </div>
+                </div>
+
+                <div className="p-1.5 rounded-lg bg-white/5 group-hover:bg-[#d4a853] text-zinc-400 group-hover:text-black transition-all">
+                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </div>
+
               {/* Media Thumbnail Container */}
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
                 <img
@@ -100,7 +157,7 @@ export default function InstagramWorksGrid() {
                 {/* Top Badge Overlay */}
                 <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
                   <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-white border border-white/15">
-                    {work.badge || work.category}
+                    {work.category}
                   </span>
 
                   {work.platform === "YouTube" ? (
@@ -162,7 +219,7 @@ export default function InstagramWorksGrid() {
                     ) : (
                       <InstagramIcon className="w-3.5 h-3.5" />
                     )}
-                    {work.handle}
+                    <span>{work.platform === "YouTube" ? "Channel" : "Profile"}</span>
                   </span>
                 </div>
               </div>

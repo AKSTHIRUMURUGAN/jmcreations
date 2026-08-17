@@ -16,6 +16,7 @@ import AudioFeedbackPlayer from "@/components/impact/AudioFeedbackPlayer";
 import LinkedInImpactGrid from "@/components/impact/LinkedInImpactGrid";
 import InstagramWorksGrid from "@/components/impact/InstagramWorksGrid";
 import ProofGalleryCarousel from "@/components/impact/ProofGalleryCarousel";
+import InternVideoTestimonials from "@/components/impact/InternVideoTestimonials";
 import DriveArchiveBanner from "@/components/impact/DriveArchiveBanner";
 import ImpactCTA from "@/components/impact/ImpactCTA";
 
@@ -45,6 +46,7 @@ export default function OurImpactClient() {
             <ImpactStats />
             <ImpactMarquee />
             <AudioFeedbackPlayer />
+            <InternVideoTestimonials />
             <LinkedInImpactGrid />
             <InstagramWorksGrid />
             <ProofGalleryCarousel />

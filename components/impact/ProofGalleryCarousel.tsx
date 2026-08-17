@@ -43,6 +43,11 @@ export default function ProofGalleryCarousel() {
       value: "IoT & Embedded Workshop",
       count: EVENT_GALLERY_ITEMS.filter((i) => i.category === "IoT & Embedded Workshop").length,
     },
+    {
+      label: "Capture & Code Hackathon",
+      value: "Capture & Code",
+      count: EVENT_GALLERY_ITEMS.filter((i) => i.category === "Capture & Code").length,
+    },
   ];
 
   const filteredItems =

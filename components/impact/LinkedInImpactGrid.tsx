@@ -88,19 +88,40 @@ export default function LinkedInImpactGrid() {
               {/* Card Header: Author Profile */}
               <div className="p-6 pb-4 flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-black border border-[#d4a853]/40 p-1 flex items-center justify-center shrink-0">
-                    <img
-                      src={post.authorAvatar}
-                      alt={post.authorName}
-                      className="w-full h-full object-contain rounded-xl"
-                    />
+                  <div className="w-12 h-12 rounded-2xl bg-black border border-[#d4a853]/40 p-0.5 flex items-center justify-center shrink-0 overflow-hidden shadow-md">
+                    {post.authorAvatar ? (
+                      <img
+                        src={post.authorAvatar}
+                        alt={post.authorName}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover rounded-xl"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          const fallback = e.currentTarget.parentElement?.querySelector(".avatar-fallback");
+                          if (fallback) (fallback as HTMLElement).style.display = "flex";
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className={`avatar-fallback w-full h-full rounded-xl bg-gradient-to-br from-[#d4a853] to-[#a17826] text-black font-black text-sm flex items-center justify-center font-mono ${
+                        post.authorAvatar ? "hidden" : "flex"
+                      }`}
+                    >
+                      {post.authorName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()}
+                    </div>
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-bold text-white group-hover:text-[#0077b5] transition-colors">
                         {post.authorName}
                       </h4>
-                      <div className="w-4 h-4 rounded-full bg-[#0077b5] text-white flex items-center justify-center text-[9px] font-bold">
+                      <div className="w-4 h-4 rounded-full bg-[#0077b5] text-white flex items-center justify-center text-[9px] font-bold shrink-0">
                         in
                       </div>
                     </div>
