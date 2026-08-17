@@ -19,7 +19,7 @@ export default function ImpactMarquee() {
   const [selectedFeedback, setSelectedFeedback] = useState<ExtractedFeedbackItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const categories = ["All", "Career Catalyst", "Placement", "Tech Workshop", "Mentorship"];
+  const categories = ["All", "Startup Starter", "Career Catalyst", "Placement", "Tech Workshop", "Mentorship"];
 
   const filteredItems =
     activeCategory === "All"
@@ -110,14 +110,28 @@ export default function ImpactMarquee() {
         {selectedFeedback && (
           <DialogContent className="max-w-2xl bg-[#0e0e12] border-white/15">
             <DialogHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="emerald" className="text-[10px]">
-                  <ShieldCheck className="w-3 h-3 mr-1" />
-                  Verified Student Proof
-                </Badge>
-                <span className="text-[10px] font-mono text-zinc-400">
-                  Date: {selectedFeedback.feedbackDate}
-                </span>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="emerald" className="text-[10px]">
+                    <ShieldCheck className="w-3 h-3 mr-1" />
+                    Verified Student Proof
+                  </Badge>
+                  <span className="text-[10px] font-mono text-zinc-400">
+                    {selectedFeedback.feedbackDate}
+                  </span>
+                </div>
+
+                {selectedFeedback.driveProofUrl && (
+                  <a
+                    href={selectedFeedback.driveProofUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-[#d4a853] hover:underline"
+                  >
+                    <span>Open Drive Proof</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
               </div>
               <DialogTitle className="text-xl font-black text-white">
                 {selectedFeedback.studentName}
