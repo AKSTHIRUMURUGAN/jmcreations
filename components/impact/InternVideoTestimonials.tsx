@@ -23,19 +23,20 @@ function VideoCardPreview({
   video: InternVideoFeedbackItem;
   onOpen: () => void;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [hasVideoLoaded, setHasVideoLoaded] = useState(false);
 
   const handleMouseEnter = () => {
+    setIsHovered(true);
     if (videoRef.current) {
       videoRef.current.play().catch(() => {});
     }
   };
 
   const handleMouseLeave = () => {
+    setIsHovered(false);
     if (videoRef.current) {
       videoRef.current.pause();
-      videoRef.current.currentTime = 2.0;
     }
   };
 
@@ -44,43 +45,37 @@ function VideoCardPreview({
       onClick={onOpen}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-950 cursor-pointer group/thumb"
+      className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-950 cursor-pointer group/thumb select-none"
     >
       {/* Skeleton Shimmer */}
       <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.06] to-white/[0.02] animate-pulse pointer-events-none" />
 
-      {/* Fallback Poster Image */}
+      {/* Primary High-Resolution Poster Image */}
       <img
         src={video.thumbnailUrl}
         alt={video.internName}
         referrerPolicy="no-referrer"
-        className={`w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500 relative z-10 ${
-          hasVideoLoaded ? "opacity-0 absolute inset-0" : "opacity-80"
-        }`}
+        className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500 relative z-10"
       />
 
-      {/* Real Live Video Frame (seeks to 2.0s to bypass initial black screen) */}
-      <video
-        ref={videoRef}
-        src={`/api/video-proxy?id=${video.driveFileId}#t=2.0`}
-        preload="metadata"
-        muted
-        loop
-        playsInline
-        onLoadedData={(e) => {
-          setHasVideoLoaded(true);
-          try {
-            e.currentTarget.currentTime = 2.0;
-          } catch {}
-        }}
-        className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500"
-      />
+      {/* On-Demand Video Preview Layer (mounted only on user hover) */}
+      {isHovered && (
+        <video
+          ref={videoRef}
+          src={`/api/video-proxy?id=${video.driveFileId}#t=2.0`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-20"
+        />
+      )}
 
       {/* Dark Gradient Overlay for Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/20 pointer-events-none z-20" />
 
       {/* Top Badge & Duration */}
-      <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-10">
+      <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-30">
         <Badge variant="gold" className="text-[10px]">
           Tech Intern
         </Badge>
@@ -91,14 +86,14 @@ function VideoCardPreview({
       </div>
 
       {/* Centered Glowing Play Button */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
         <div className="w-13 h-13 rounded-full bg-[#d4a853] text-black flex items-center justify-center shadow-xl shadow-[#d4a853]/50 group-hover/thumb:scale-110 group-hover/thumb:shadow-[#d4a853]/80 transition-all duration-300">
           <Play className="w-5 h-5 fill-black translate-x-0.5" />
         </div>
       </div>
 
       {/* Bottom Overlay Hint */}
-      <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-[11px] font-mono text-zinc-300 pointer-events-none z-10">
+      <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-[11px] font-mono text-zinc-300 pointer-events-none z-30">
         <span className="flex items-center gap-1 text-[#d4a853]">
           <ShieldCheck className="w-3.5 h-3.5" />
           Verified Intern
@@ -143,7 +138,7 @@ export default function InternVideoTestimonials() {
               key={video.id}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               transition={{ duration: 0.4, delay: idx * 0.05 }}
               className="group rounded-3xl overflow-hidden bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/10 hover:border-[#d4a853]/50 transition-all duration-300 hover:shadow-2xl hover:shadow-[#d4a853]/15 flex flex-col justify-between"
             >

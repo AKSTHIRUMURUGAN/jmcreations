@@ -20,7 +20,7 @@ export default function ImpactStats() {
                 key={stat.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "80px" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="relative group p-6 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#d4a853]/40 transition-all duration-300 hover:shadow-xl hover:shadow-[#d4a853]/10"
               >

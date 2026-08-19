@@ -75,7 +75,7 @@ export default function ImpactMarquee() {
       {/* Infinite Moving Marquees */}
       <div className="space-y-6">
         {/* Row 1 - Left Direction */}
-        <Marquee pauseOnHover duration={45} repeat={3}>
+        <Marquee pauseOnHover duration={50} repeat={2}>
           {firstRow.map((item) => (
             <FeedbackCard
               key={item.id}
@@ -86,7 +86,7 @@ export default function ImpactMarquee() {
         </Marquee>
 
         {/* Row 2 - Reverse Right Direction */}
-        <Marquee reverse pauseOnHover duration={50} repeat={3}>
+        <Marquee reverse pauseOnHover duration={55} repeat={2}>
           {secondRow.map((item) => (
             <FeedbackCard
               key={item.id + "-rev"}
@@ -190,7 +190,7 @@ function FeedbackCard({
   return (
     <div
       onClick={onOpenModal}
-      className="w-[340px] sm:w-[400px] p-5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 hover:border-[#d4a853]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#d4a853]/10 cursor-pointer flex flex-col justify-between group shrink-0 mx-2"
+      className="w-[320px] sm:w-[380px] h-[210px] sm:h-[220px] p-5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 hover:border-[#d4a853]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#d4a853]/10 cursor-pointer flex flex-col justify-between group shrink-0 mx-2 select-none"
     >
       <div>
         {/* Rating & Tag */}
@@ -200,13 +200,13 @@ function FeedbackCard({
               <Star key={i} className="w-3.5 h-3.5 fill-[#d4a853] text-[#d4a853]" />
             ))}
           </div>
-          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#d4a853]/15 text-[#d4a853] border border-[#d4a853]/30">
+          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#d4a853]/15 text-[#d4a853] border border-[#d4a853]/30 truncate max-w-[150px]">
             {item.badge}
           </span>
         </div>
 
         {/* Quote text snippet */}
-        <p className="text-xs text-zinc-300 leading-relaxed italic mb-4 line-clamp-3">
+        <p className="text-xs text-zinc-300 leading-relaxed italic mb-3 line-clamp-3">
           &ldquo;{item.quoteText}&rdquo;
         </p>
       </div>
@@ -238,7 +238,7 @@ function FeedbackCard({
             e.stopPropagation();
             onOpenModal();
           }}
-          className="p-1.5 rounded-lg bg-white/5 group-hover:bg-[#d4a853] text-zinc-400 group-hover:text-black transition-all shrink-0 ml-2"
+          className="p-1.5 rounded-lg bg-white/5 group-hover:bg-[#d4a853] text-zinc-400 group-hover:text-black transition-all shrink-0 ml-2 cursor-pointer"
           title="View Original Proof"
         >
           <Eye className="w-3.5 h-3.5" />

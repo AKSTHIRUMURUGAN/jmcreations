@@ -84,7 +84,7 @@ export default function InstagramWorksGrid() {
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
               className="group rounded-3xl bg-gradient-to-b from-white/[0.06] via-white/[0.03] to-black/80 border border-white/10 hover:border-[#d4a853]/60 transition-all duration-300 hover:shadow-2xl hover:shadow-[#d4a853]/15 flex flex-col justify-between p-6"
             >

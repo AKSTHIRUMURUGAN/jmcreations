@@ -17,13 +17,13 @@ export function Marquee({
   reverse = false,
   pauseOnHover = true,
   children,
-  repeat = 4,
-  duration = 40,
+  repeat = 2,
+  duration = 45,
 }: MarqueeProps) {
   return (
     <div
       className={cn(
-        "group flex overflow-hidden p-2 [--gap:1.25rem] [gap:var(--gap)] select-none w-full relative",
+        "group flex overflow-hidden py-2 [--gap:1rem] [gap:var(--gap)] select-none w-full relative pointer-events-auto",
         className
       )}
       style={
@@ -36,7 +36,7 @@ export function Marquee({
         <div
           key={i}
           className={cn(
-            "flex shrink-0 justify-around [gap:var(--gap)] min-w-full flex-row items-center",
+            "flex shrink-0 [gap:var(--gap)] flex-row items-stretch min-w-max",
             reverse ? "animate-marquee-reverse" : "animate-marquee",
             pauseOnHover && "group-hover:[animation-play-state:paused]"
           )}

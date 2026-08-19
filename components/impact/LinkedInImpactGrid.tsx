@@ -81,7 +81,7 @@ export default function LinkedInImpactGrid() {
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="block rounded-3xl bg-gradient-to-b from-white/[0.05] to-white/[0.02] border border-white/10 hover:border-[#0077b5]/50 transition-all duration-300 hover:shadow-2xl hover:shadow-[#0077b5]/15 group relative overflow-hidden"
             >
